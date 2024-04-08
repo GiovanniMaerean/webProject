@@ -48,6 +48,9 @@ class Achievement(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     users = models.ManyToManyField('SteamUser', blank=True)
 
+    def __str__(self):
+        return f"{self.name} - {self.product.name}"
+
 
 class Developer(models.Model):
     name = models.CharField(max_length=200)
