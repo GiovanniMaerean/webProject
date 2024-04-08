@@ -37,3 +37,21 @@ class Product(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Developer(models.Model):
+    name = models.CharField(max_length=200)
+    developedProducts = models.IntegerField(null=True)
+    products = models.ManyToManyField('Product', blank=True)
+
+    def __str__(self):
+        return self.name
+
+
+class Publisher(models.Model):
+    name = models.CharField(max_length=200)
+    publishedProducts = models.IntegerField(null=True)
+    products = models.ManyToManyField('Product', blank=True)
+
+    def __str__(self):
+        return self.name
