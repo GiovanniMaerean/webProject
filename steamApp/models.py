@@ -1,3 +1,6 @@
+import uuid
+
+from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.db import models
 
@@ -11,6 +14,7 @@ class SteamUser(models.Model):
     profileUrl = models.URLField()
     countryCode = models.CharField(max_length=10)
     timeCreated = models.DateTimeField(auto_now_add=True)
+    creatorUser = models.ForeignKey(User, on_delete=models.CASCADE)
 
     friends = models.ManyToManyField('self', symmetrical=True, blank=True)
     products = models.ManyToManyField('Product', blank=True)
@@ -20,7 +24,8 @@ class SteamUser(models.Model):
 
 
 class Product(models.Model):
-    appId = models.IntegerField(primary_key=True)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    appId = models.IntegerField(null=True)
     name = models.CharField(max_length=200)
     type = models.CharField(max_length=100)
     age = models.IntegerField(null=True)
@@ -34,9 +39,10 @@ class Product(models.Model):
     languages = models.CharField(max_length=300)
     owners = models.IntegerField(null=True)
     description = models.TextField()
+    creatorUser = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.name
+        return self.name + str(self.releaseDate)
 
 
 
@@ -45,6 +51,7 @@ class Developer(models.Model):
     name = models.CharField(max_length=200)
     developedProducts = models.IntegerField(null=True)
     products = models.ManyToManyField('Product', blank=True)
+    creatorUser = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
@@ -54,6 +61,7 @@ class Publisher(models.Model):
     name = models.CharField(max_length=200)
     publishedProducts = models.IntegerField(null=True)
     products = models.ManyToManyField('Product', blank=True)
+    creatorUser = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
