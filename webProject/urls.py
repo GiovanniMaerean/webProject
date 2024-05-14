@@ -18,9 +18,15 @@ from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import TemplateView
 
+from steamApp import views
+from steamApp.views import *
+
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("", TemplateView.as_view(template_name="home.html"), name="home"),
     path("accounts/", include("accounts.urls")),
-    path("accounts/", include("django.contrib.auth.urls"))
+    path("accounts/", include("django.contrib.auth.urls")),
+    path("createProducts/", views.createProducts, name="createProducts"),
+    path('get-steam-app-list/', get_steam_app_list, name='get_steam_app_list'),
 ]

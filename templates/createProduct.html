@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}Add products{% endblock %}
+
+{% block content %}
+
+
+<script>
+$(document).ready(function(){
+    $("#id_product_name").autocomplete({
+        source: function(request, response) {
+            $.ajax({
+                url: "/get-steam-app-list/",
+                dataType: "json",
+                success: function(data) {
+                    var appList = data.applist.apps;
+                    var filteredApps = $.map(appList, function(app) {
+                        if (app.name.toLowerCase().startsWith(request.term.toLowerCase())) {
+                            return {
+                                label: app.name,
+                                value: app.name
+                            };
+                        }
+                    });
+                    var maxResults = 10;
+                    response(filteredApps.slice(0, maxResults));
+                }
+            });
+        },
+        minLength: 2 // Minimum length of input before the autocomplete is triggered
+    });
+});
+
+</script>
+
+{% if user.is_authenticated %}
+    Add your Steam products here
+
+    <form>
+        <table>
+            <tr>
+                <td>Name:</td>
+                <td>
+                    <input id="id_product_name" /> (autocomplete)
+                </td>
+
+            </tr>
+
+            <tr>
+                <td>
+                    Id
+                </td>
+                <td>
+                    <input >
+                </td>
+            </tr>
+        </table>
+    </form>
+
+{% else %}
+    <p>You are not logged in</p>
+    <a href="{% url 'login' %}">Log In</a>
+    <a href="{% url 'signup' %}">Sign Up</a>
+{% endif %}
+{% endblock %}
