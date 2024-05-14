@@ -7,6 +7,7 @@ from django.http import JsonResponse
 
 
 def createProducts(request):
+
     return render(request, 'createProduct.html')
 
 
