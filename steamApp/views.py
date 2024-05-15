@@ -8,14 +8,24 @@ from steamApp.forms import ProductForm
 
 
 def createProducts(request):
-    form = ProductForm(request.POST)
-    context = {'form': form}
 
-    if form.is_valid():
-        product = form.save(commit=False)
-        product.creatorUser = request.user
-        product.save()
-        return redirect('home')
+    if request.method == 'POST':
+        form = ProductForm(request.POST)
+        if form.is_valid():
+            product = form.save(commit=False)
+            product.creatorUser = request.user
+            product.save()
+            return redirect('home')
+        else:
+            # El formulario no es válido, devuelve una respuesta JSON con los errores del formulario
+            print(form.errors)
+            errors = form.errors.as_json()
+            return JsonResponse({'errors': errors}, status=400)  # Bad request status code
+
+
+    else:
+        form = ProductForm()
+    context = {'form': form}
 
     return render(request, 'createProduct.html', context)
 

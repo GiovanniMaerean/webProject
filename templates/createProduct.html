@@ -4,8 +4,21 @@
 
 {% block content %}
 
-
 <script>
+function eraseInputs() {
+    var inputs = document.querySelectorAll('input');
+
+    inputs.forEach(function(input) {
+        input.value = '';
+
+        if (input.defaultValue) {
+            input.value = input.defaultValue;
+        }
+    });
+}
+
+
+
 $(document).ready(function(){
     $("#id_product_name").autocomplete({
         source: function(request, response) {
@@ -31,6 +44,7 @@ $(document).ready(function(){
         minLength: 2,
         select:function (event, ui) {
             if (ui.item){
+                eraseInputs();
                 var appId = ui.item.appid;
 
                 $.ajax({
@@ -59,6 +73,8 @@ $(document).ready(function(){
 
                         $("#id_product_price").val(details.price_overview.final_formatted);
                         $("#id_product_discount").val(details.price_overview.discount_percent);
+                        $("#id_product_languages").val(details.supported_languages)
+                        $("#id_product_description").val(details.short_description)
 
                     }
                 });
@@ -70,96 +86,94 @@ $(document).ready(function(){
 });
 
 </script>
-
+    
 {% if user.is_authenticated %}
+    
     Add your Steam products here
+    <form method="post">
+        {% csrf_token %}
+        <table>
+            <tr>
+                <td>
+                    Name:
+                    <input id="id_product_name" placeholder="Name" name="name"/> (autocomplete)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Id:
+                    <input id="id_product_appId" placeholder="Id" name="appId"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Type:
+                    <input id="id_product_type" placeholder="Type" name="type"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Age:
+                    <input id="id_product_age" placeholder="Age" name="age"/>
+                </td>
+            </tr>
+            <tr>
+                <td>Free:
+                    <input id="id_product_free"  name="free" type="checkbox"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Recommendations:
+                    <input id="id_product_recommendations" placeholder="Recommendations" name="recommendations"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    ReleaseDate:
+                    <input id="id_product_releaseDate" placeholder="ReleaseDate" name="releaseDate"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Categories:
+                    <input id="id_product_categories" placeholder="Categories" name="categories" />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Genres:
+                    <input id="id_product_genres" placeholder="Genres" name="genres"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Price:
+                    <input id="id_product_price" placeholder="Price" name="price"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Discount percent:
+                    <input id="id_product_discount" placeholder="Discount" name="discount"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Languages:
+                    <input id="id_product_languages" placeholder="Languages" name="languages"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    Description:
+                    <input id="id_product_description" placeholder="Description" name="description"/>
+                </td>
+            </tr>
+        </table>
 
-    {% csrf_token %}
-    <table>
-        <tr>
-            <td>
-                Name:
-                <input id="id_product_name" placeholder="Name" name="name"/> (autocomplete)
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Id:
-                <input id="id_product_appId" placeholder="Id" name="appId"/>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Type:
-                <input id="id_product_type" placeholder="Type" name="type"/>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Age:
-                <input id="id_product_age" placeholder="Age" name="age"/>
-            </td>
-        </tr>
-        <tr>
-            <td>Free:
-                <input id="id_product_free"  name="free" type="checkbox"/>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Recommendations:
-                <input id="id_product_recommendations" placeholder="Recommendations" name="recommendations"/>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                ReleaseDate:
-                <input id="id_product_releaseDate" placeholder="ReleaseDate" name="releaseDate"/>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Categories:
-                <input id="id_product_categories" placeholder="Categories" name="categories" />
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Genres:
-                <input id="id_product_genres" placeholder="Genres" name="genres"/>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Price:
-                <input id="id_product_price" placeholder="Price" name="price"/>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Discount percent:
-                <input id="id_product_discount" placeholder="Discount" name="discount"/>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Languages:
-                <input id="id_product_languages" placeholder="Languages" name="languages"/>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Owners:
-                <input id="id_product_owners" placeholder="Owners" name="owners"/>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Description:
-                <input id="id_product_description" placeholder="Description" name="description"/>
-            </td>
-        </tr>
-    </table>
+        <button type="submit">Add product</button>
+    </form>
 
 
 {% else %}
