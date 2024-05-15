@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
 from steamApp.forms import ProductForm
+from steamApp.models import Product
 
 
 # Create your views here.
@@ -45,3 +46,8 @@ def get_steam_app_details(request, app_id):
     response = requests.get(url)
     data = response.json()
     return JsonResponse(data)
+
+def showProducts(request):
+    products = Product.objects.all(user=request.user)
+    context = {'products': products}
+    return render(request, 'showProduct.html', context)
