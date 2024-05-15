@@ -1,6 +1,6 @@
 import requests
-from django.shortcuts import render, redirect
-from django.http import JsonResponse
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
 from steamApp.forms import ProductForm
@@ -48,6 +48,12 @@ def get_steam_app_details(request, app_id):
     return JsonResponse(data)
 
 def showProducts(request):
-    products = Product.objects.all(user=request.user)
+    products = Product.objects.filter(creatorUser=request.user)
     context = {'products': products}
     return render(request, 'showProduct.html', context)
+
+def deleteProduct(request, id):
+    product = get_object_or_404(Product, pk=id)
+    product.delete()
+    return redirect('showProducts')
+
