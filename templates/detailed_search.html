@@ -5,14 +5,15 @@
 {% block content %}
 {% if user.is_authenticated %}
     
-    {% if search_value %}
-        <h2>Search Results for: {{ search_value }}</h2>
-        <h2>Products:</h2>
+    {% if app_data %}
+        <h1>Product Details</h1>
         <ul>
-            {% for product in products %}
-                <li><a href="{% url 'detailedSearch' product.appid %}">{{ product.name }} ({{ product.appid }})</a></li>
+            {% for key, value in app_data.items %}
+                <li><strong>{{ key }}:</strong> {{ value }}</li>
             {% endfor %}
         </ul>
+    {% else %}
+        <p>Details not found</p>
     {% endif %}
     
     <form action="{% url 'logout' %}" method="post">

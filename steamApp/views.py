@@ -76,3 +76,42 @@ def search(request):
             products.sort(key=lambda x: x['name'].lower())
 
     return render(request, 'search.html', {'search_value': search_value, 'products': products})
+
+
+def detailedSearch(request, app_id):
+    response = requests.get(f'https://store.steampowered.com/api/appdetails?appids={app_id}')
+    print(response.status_code)
+    if response.status_code == 200:
+        data = response.json()
+
+        app_data = {}
+
+        if str(app_id) in data:
+            print("Goooood")
+            app_info = data[str(app_id)]['data']
+            # Lista de atributos que deseas incluir en el contexto
+            attributes_to_include = ['type','name','steam_appid','required_age','is_free', 'short_description','supported_languages', 'release_date', 'platforms',
+                                     'developers', 'publishers']
+
+            for attribute in attributes_to_include:
+                if attribute in app_info:
+                    app_data[attribute] = app_info[attribute]
+                else:
+                    app_data[attribute] = None
+
+            if 'price_overview' in app_info:
+                price_overview = app_info['price_overview']
+                app_data['discount_percent'] = price_overview.get('discount_percent')
+                app_data['final_formatted'] = price_overview.get('final_formatted')
+
+            if 'metacritic' in app_info:
+                metacritic = app_info['metacritic']
+                app_data['metacritic'] = metacritic.get('score')
+
+
+    else:
+        app_data = None
+
+    print(app_data)
+
+    return render(request, 'detailed_search.html', {'app_data': app_data})

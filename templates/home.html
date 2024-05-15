@@ -3,28 +3,6 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-    <script>
-        document.getElementById("searchButton").addEventListener("click", function() {
-            var inputValue = document.getElementById("inputValue").value;
-
-            var url = "/search/?parametro=" + inputValue;
-
-            fetch(url)
-                .then(response => {
-                    if (response.ok) {
-                        return response.json();
-                    } else {
-                        throw new Error('Error en la solicitud.');
-                    }
-                })
-                .then(data => {
-                    console.log(data);
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-        });
-    </script>
 {% if user.is_authenticated %}
     Hi {{ user.username }}!
     <form action="{% url 'search' %}" method="post">
