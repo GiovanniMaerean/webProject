@@ -29,4 +29,5 @@ urlpatterns = [
     path("accounts/", include("django.contrib.auth.urls")),
     path("createProducts/", views.createProducts, name="createProducts"),
     path('get-steam-app-list/', get_steam_app_list, name='get_steam_app_list'),
+    path('get-steam-app-details/<int:app_id>/', get_steam_app_details, name='get_steam_app_details'),
 ]

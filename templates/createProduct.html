@@ -18,7 +18,8 @@ $(document).ready(function(){
                         if (app.name.toLowerCase().startsWith(request.term.toLowerCase())) {
                             return {
                                 label: app.name,
-                                value: app.name
+                                value: app.name,
+                                appid: app.appid
                             };
                         }
                     });
@@ -27,7 +28,44 @@ $(document).ready(function(){
                 }
             });
         },
-        minLength: 2 
+        minLength: 2,
+        select:function (event, ui) {
+            if (ui.item){
+                var appId = ui.item.appid;
+
+                $.ajax({
+                    url: "/get-steam-app-details/" + appId + "/",
+                    dataType: "json",
+                    success: function (data) {
+                        var details = data[appId].data;
+                        $("#id_product_appId").val(appId);
+                        $("#id_product_type").val(details.type);
+                        $("#id_product_age").val(details.required_age);
+                        $("#id_product_free").prop('checked', details.is_free);
+                        $("#id_product_recommendations").val(details.recommendations.total);
+                        $("#id_product_releaseDate").val(details.release_date.date);
+
+                        var categoriesList = details.categories.map(function(category) {
+                            return category.description;
+                        }).join(", ");
+                        $("#id_product_categories").val(categoriesList);
+
+
+                        var genresList = details.genres.map(function(genre) {
+                            return genre.description;
+                        }).join(", ");
+
+                        $("#id_product_genres").val(genresList);
+
+                        $("#id_product_price").val(details.price_overview.final_formatted);
+                        $("#id_product_discount").val(details.price_overview.discount_percent);
+
+                    }
+                });
+            }
+
+
+        }
     });
 });
 
@@ -82,7 +120,7 @@ $(document).ready(function(){
         <tr>
             <td>
                 Categories:
-                <input id="id_product_categories" placeholder="Categories" name="categories"/>
+                <input id="id_product_categories" placeholder="Categories" name="categories" />
             </td>
         </tr>
         <tr>
@@ -99,7 +137,7 @@ $(document).ready(function(){
         </tr>
         <tr>
             <td>
-                Discount:
+                Discount percent:
                 <input id="id_product_discount" placeholder="Discount" name="discount"/>
             </td>
         </tr>

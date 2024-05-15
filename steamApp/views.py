@@ -25,3 +25,10 @@ def get_steam_app_list(request):
     response = requests.get(url)
     data = response.json()
     return JsonResponse(data)
+
+
+def get_steam_app_details(request, app_id):
+    url = f"https://store.steampowered.com/api/appdetails?appids={app_id}"
+    response = requests.get(url)
+    data = response.json()
+    return JsonResponse(data)
