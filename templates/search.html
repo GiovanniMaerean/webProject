@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+    
+    {% if search_value %}
+        <h2>Search Results for: {{ search_value }}</h2>
+        <h2>Products:</h2>
+        <ul>
+            {% for product in products %}
+                <li><a href="">{{ product.name }} ({{ product.appid }})</a></li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+    
+    <form action="{% url 'logout' %}" method="post">
+      {% csrf_token %}
+      <button type="submit">Log Out</button>
+    </form>
+    <a href="{% url 'createProducts' %}">Add a Product</a>
+{% else %}
+    <p>You are not logged in</p>
+    <a href="{% url 'login' %}">Log In</a> 
+    <a href="{% url 'signup' %}">Sign Up</a>
+{% endif %}
+{% endblock %}

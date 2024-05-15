@@ -3,13 +3,48 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
+    <script>
+        document.getElementById("searchButton").addEventListener("click", function() {
+            var inputValue = document.getElementById("inputValue").value;
+
+            var url = "/search/?parametro=" + inputValue;
+
+            fetch(url)
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        throw new Error('Error en la solicitud.');
+                    }
+                })
+                .then(data => {
+                    console.log(data);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+    </script>
 {% if user.is_authenticated %}
     Hi {{ user.username }}!
+    <form action="{% url 'search' %}" method="post">
+    {% csrf_token %}
+    <table>
+        <tr>
+            <td>
+                <input type="text" name="inputValue" id="inputValue">
+            </td>
+            <td>
+                <button type="submit">Search</button>
+            </td>
+        </tr>
+    </table>
+</form>
     <form action="{% url 'logout' %}" method="post">
       {% csrf_token %}
       <button type="submit">Log Out</button>
     </form>
-    <a href="{% url 'createProducts' %}">Add a Product</a> 
+    <a href="{% url 'createProducts' %}">Add a Product</a>
 {% else %}
     <p>You are not logged in</p>
     <a href="{% url 'login' %}">Log In</a> 

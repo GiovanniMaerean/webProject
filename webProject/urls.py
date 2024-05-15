@@ -32,4 +32,6 @@ urlpatterns = [
     path('get-steam-app-details/<int:app_id>/', get_steam_app_details, name='get_steam_app_details'),
     path('showProducts/', showProducts, name='showProducts'),
     path('deleteProduct/<uuid:id>/', deleteProduct, name='deleteProduct'),
+    path('search/', views.search, name='search'),
+
 ]
