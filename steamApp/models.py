@@ -30,16 +30,17 @@ class Product(models.Model):
     free = models.BooleanField(default=False)
     recommendations = models.IntegerField(null=True, blank=True)
     releaseDate = models.DateField(blank=True, null=True)
-    categories = models.CharField(max_length=200, blank=True, null=True)
-    genres = models.CharField(max_length=200, blank=True, null=True)
-    price = models.FloatField(null=True, blank=True)
+    categories = models.CharField(max_length=500, blank=True, null=True)
+    genres = models.CharField(max_length=500, blank=True, null=True)
+    #price = models.FloatField(null=True, blank=True)
+    price = models.CharField(max_length=20, null=True, blank=True)
     discount = models.FloatField(null=True, blank=True)
-    languages = models.CharField(max_length=300, blank=True)
+    languages = models.CharField(max_length=500, blank=True)
     description = models.TextField(blank=True, null=True)
     creatorUser = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.name + str(self.releaseDate)
+        return self.name +" "+ str(self.releaseDate)
 
 
 

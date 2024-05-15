@@ -5,6 +5,24 @@
 {% block content %}
 
 <script>
+/*
+$(document).ready(function() {
+    // Función para limpiar el valor del campo "price"
+    function cleanPriceValue() {
+        var priceInput = $("#id_product_price").val(); // Obtener el valor del campo "price"
+        var cleanedPrice = parseFloat(priceInput.replace(/[^\d.]/g, '')); // Eliminar todos los caracteres excepto los dígitos y el punto decimal
+        $("#id_product_price").val(cleanedPrice); // Establecer el valor limpio en el campo "price"
+    }
+
+    // Evento para limpiar el valor del campo "price" antes de enviar el formulario
+    $("form").submit(function() {
+        cleanPriceValue(); // Llamar a la función para limpiar el valor del campo "price"
+    });
+});
+
+ */
+
+
 function eraseInputs() {
     var inputs = document.querySelectorAll('input');
 
@@ -16,6 +34,7 @@ function eraseInputs() {
         }
     });
 }
+
 
 
 

@@ -1,12 +1,15 @@
 import requests
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+
 from steamApp.forms import ProductForm
 
 
 # Create your views here.
 
 
+@csrf_exempt
 def createProducts(request):
 
     if request.method == 'POST':
