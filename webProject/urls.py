@@ -34,5 +34,6 @@ urlpatterns = [
     path('deleteProduct/<uuid:id>/', deleteProduct, name='deleteProduct'),
     path('search/', views.search, name='search'),
     path('detailedSearch/<int:app_id>/', detailedSearch, name='detailedSearch'),
+    path('modifyProduct/<uuid:id>/', modifyProduct, name='modifyProduct'),
 
 ]

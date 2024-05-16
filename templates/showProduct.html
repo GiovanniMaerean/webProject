@@ -5,7 +5,8 @@
 {% block content %}
 {% if user.is_authenticated %}
     {% for product in products %}
-        <li>{{ product.name }}</li> 
+        <li>{{ product.name }}</li>
+        <a href="{% url 'modifyProduct' product.id %}"><button type="submit">Modify</button></a>
         <a href="{% url 'deleteProduct' product.id %}"><button type="submit">Delete</button></a>
     {% endfor %}
 {% else %}

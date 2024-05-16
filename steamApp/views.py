@@ -115,3 +115,16 @@ def detailedSearch(request, app_id):
     print(app_data)
 
     return render(request, 'detailed_search.html', {'app_data': app_data})
+
+def modifyProduct(request, id):
+    product = Product.objects.get(id=id)
+    if request.method == 'POST':
+        form = ProductForm(request.POST, instance=product)
+        if form.is_valid():
+            form.save()
+            return redirect('showProducts')
+    else:
+        form = ProductForm(instance=product)
+    context = {'product': product, 'form': form}
+    return render(request, 'modifyProduct.html', context)
+

@@ -29,7 +29,7 @@ class Product(models.Model):
     age = models.IntegerField(null=True, blank=True)
     free = models.BooleanField(default=False)
     recommendations = models.IntegerField(null=True, blank=True)
-    releaseDate = models.DateField(blank=True, null=True)
+    releaseDate = models.CharField(max_length=20,blank=True, null=True)
     categories = models.CharField(max_length=500, blank=True, null=True)
     genres = models.CharField(max_length=500, blank=True, null=True)
     #price = models.FloatField(null=True, blank=True)
