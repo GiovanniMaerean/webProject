@@ -1,3 +1,74 @@
+body {
+  background-color: #0d1b54; /* Dark blue background */
+  color: white; /* White text */
+  font-family: Arial, sans-serif; /* Adjust font family as needed */
+}
+
+.header-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px; /* Add horizontal padding */
+}
+
+nav {
+  display: flex;
+  align-items: center;
+  background-color: #4a90e2; /* Blue navigation bar */
+  height: 60px; /* Aumenta la altura de la barra de navegación */
+  padding: 0 20px; /* Add horizontal padding */
+  width: calc(100% - 40px); /* Barra de navegación ocupa casi toda la anchura de la pantalla con un pequeño margen */
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  padding: 10px 15px; /* Adjust padding for spacing */
+  font-weight: bold; /* Bold text for better readability */
+}
+
+nav a:hover {
+  background-color: #103370; /* Subtle hover effect */
+}
+
+.logo {
+  height: 60px; /* Ajusta la altura del logo */
+  margin-right: 10px; /* Espacio entre el logo y los elementos de la barra de navegación */
+}
+
 h1 {
-    color: blue;
+  font-size: 36px; /* Aumenta el tamaño del título */
+  margin-right: auto; /* Mueve el título a la derecha */
+  margin-left: 20px; /* Añade un margen a la izquierda */
+}
+
+/* Ajustes para el texto "Hi user" y contenido inferior */
+.content {
+  /* Ajustes para el texto "Hi user" y contenido inferior */
+.content {
+  margin-left: 40px; /* Añade un margen más amplio a la izquierda */
+  font-size: 20px; /* Aumenta el tamaño del texto */
+}
+
+}
+
+/* Media queries for responsive navigation (optional) */
+@media (max-width: 768px) {
+  .header-container {
+    flex-direction: column; /* Stack items vertically on small screens */
+  }
+
+  nav {
+    flex-direction: column; /* Stack items vertically on small screens */
+    height: auto; /* Auto height on small screens */
+    width: auto; /* Auto width on small screens */
+  }
+
+  nav a {
+    padding: 10px 0; /* Adjust padding for spacing */
+  }
+
+  .logo {
+    margin-bottom: 10px; /* Espacio entre el logo y los elementos de la barra de navegación */
+  }
 }

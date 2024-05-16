@@ -14,9 +14,17 @@
 </head>
 
 <body>
-  <main>
-    <h1>Steam web</h1>
+  <header>
+    <div class="header-container">
+      <img src="{% static 'img/logo_steam2-ai-brush-removebg-g28ncgnt.png' %}" alt="Logo" class="logo">
+      <h1>Steam web</h1>
+      <nav> <!-- Barra de navegación más gruesa y larga -->
+        <!-- Aquí irían los elementos de la barra de navegación -->
+      </nav>
+    </div>
+  </header>
 
+  <main>
     {% block content %}
     {% endblock %}
   </main>
