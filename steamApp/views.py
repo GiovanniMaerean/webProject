@@ -3,8 +3,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
-from steamApp.forms import ProductForm
-from steamApp.models import Product
+from steamApp.forms import ProductForm, DeveloperForm, PublisherForm, SteamUserForm
+from steamApp.models import Product, Publisher, Developer, SteamUser
 
 
 # Create your views here.
@@ -128,3 +128,73 @@ def modifyProduct(request, id):
     context = {'product': product, 'form': form}
     return render(request, 'modifyProduct.html', context)
 
+def createDeveloper(request):
+    if request.method == 'POST':
+        form = DeveloperForm(request.POST, user=request.user)
+        if form.is_valid():
+            developer = form.save(commit=False)
+            developer.creatorUser = request.user
+            selected_products = form.cleaned_data['products']
+            numProducts = len(selected_products)
+            developer.developedProducts = numProducts
+            developer.save()
+            developer.products.set(selected_products)
+            return redirect('showDevelopers')
+    else:
+        form = DeveloperForm(user=request.user)
+    context = {'form': form}
+    return render(request, 'createDeveloper.html', context)
+
+def showDevelopers(request):
+    developers = Developer.objects.filter(creatorUser=request.user)
+    context = {'developers': developers}
+    return render(request, 'showDevelopers.html', context)
+
+def createPublisher(request):
+    if request.method == 'POST':
+        form = PublisherForm(request.POST, user=request.user)
+        if form.is_valid():
+            publisher = form.save(commit=False)
+            publisher.creatorUser = request.user
+            selected_products = form.cleaned_data['products']
+            numProducts = len(selected_products)
+            publisher.publishedProducts = numProducts
+            publisher.save()
+            publisher.products.set(selected_products)
+            return redirect('showPublishers')
+
+    else:
+        form = PublisherForm(user=request.user)
+    context = {'form': form}
+    return render(request, 'createPublisher.html', context)
+
+def showPublishers(request):
+    publishers = Publisher.objects.filter(creatorUser=request.user)
+    context = {'publishers': publishers}
+    return render(request, 'showPublishers.html', context)
+
+""" def showPublishers(request):
+    publishers = Publisher.objects.all()  # Obtener el editor específico
+    #products = publisher.publishedProducts  # Obtener todos los productos asociados al editor
+    context = {'publishers': publishers}
+    return render(request, 'showPublishers.html', context)"""
+
+
+def createSteamUser(request):
+    if request.method == 'POST':
+        form = SteamUserForm(request.POST)
+        if form.is_valid():
+            steamUser = form.save(commit=False)
+            steamUser.creatorUser = request.user
+            steamUser.save()
+            return redirect('showSteamUsers')
+
+    else:
+        form = SteamUserForm()
+    context = {'form': form}
+    return render(request, 'createSteamUser.html', context)
+
+def showSteamUsers(request):
+    steamUsers = SteamUser.objects.filter(creatorUser=request.user)
+    context = {'steamUsers': steamUsers}
+    return render(request, 'showSteamUsers.html', context)

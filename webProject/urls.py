@@ -35,5 +35,11 @@ urlpatterns = [
     path('search/', views.search, name='search'),
     path('detailedSearch/<int:app_id>/', detailedSearch, name='detailedSearch'),
     path('modifyProduct/<uuid:id>/', modifyProduct, name='modifyProduct'),
+    path('createDevelopers/', createDeveloper, name='createDeveloper'),
+    path('showDevelopers/', showDevelopers, name='showDevelopers'),
+    path('createPublisher/', createPublisher, name='createPublisher'),
+    path('showPublishers/', showPublishers, name='showPublishers'),
+    path('createSteamUser/', createSteamUser, name='createSteamUser'),
+    path('showSteamUsers/', showSteamUsers, name='showSteamUsers'),
 
 ]

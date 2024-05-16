@@ -8,7 +8,8 @@ from django.db import models
 # Create your models here.
 
 class SteamUser(models.Model):
-    steamID = models.IntegerField(primary_key=True)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
+    steamID = models.IntegerField(null=True)
     realName = models.CharField(max_length=1000)
     personaName = models.CharField(max_length=1000)
     country = models.CharField(max_length=20)
@@ -22,7 +23,7 @@ class SteamUser(models.Model):
 
 
 class Product(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     appId = models.IntegerField(null=True)
     name = models.CharField(max_length=200)
     type = models.CharField(max_length=100)
@@ -46,6 +47,7 @@ class Product(models.Model):
 
 
 class Developer(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     name = models.CharField(max_length=200)
     developedProducts = models.IntegerField(null=True)
     products = models.ManyToManyField('Product', blank=True)
@@ -56,8 +58,10 @@ class Developer(models.Model):
 
 
 class Publisher(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     name = models.CharField(max_length=200)
     publishedProducts = models.IntegerField(null=True)
+    #publishedProducts = models.CharField(max_length=20,null=True)
     products = models.ManyToManyField('Product', blank=True)
     creatorUser = models.ForeignKey(User, on_delete=models.CASCADE)
 
