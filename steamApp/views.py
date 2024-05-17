@@ -1,7 +1,7 @@
 import requests
 from django.core.paginator import Paginator
+from django.http import JsonResponse, Http404
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import JsonResponse, HttpResponse, Http404
 from django.views.decorators.csrf import csrf_exempt
 
 from steamApp.forms import ProductForm, DeveloperForm, PublisherForm, SteamUserForm
@@ -48,18 +48,6 @@ def get_steam_app_details(request, app_id):
     return JsonResponse(data)
 
 
-def showProducts(request):
-    products = Product.objects.filter(creatorUser=request.user)
-    context = {'products': products}
-    return render(request, 'showProduct.html', context)
-
-
-def deleteProduct(request, id):
-    product = get_object_or_404(Product, pk=id)
-    product.delete()
-    return redirect('showProducts')
-
-
 def search(request, inputValue):
     search_value = inputValue.lower()
     products = []
@@ -72,7 +60,6 @@ def search(request, inputValue):
                     app['name'].lower().startswith(search_value)]
 
         products.sort(key=lambda x: x['name'].lower())
-
 
     try:
         paginator = Paginator(products, 10)
@@ -89,7 +76,6 @@ def search(request, inputValue):
     return render(request, 'search.html', context)
 
 
-
 def detailedSearch(request, app_id):
     response = requests.get(f'https://store.steampowered.com/api/appdetails?appids={app_id}')
     print(response.status_code)
@@ -102,7 +88,8 @@ def detailedSearch(request, app_id):
             print("Goooood")
             app_info = data[str(app_id)]['data']
             # Lista de atributos que deseas incluir en el contexto
-            attributes_to_include = ['header_image','name','type','steam_appid','required_age','is_free', 'short_description','supported_languages', 'release_date', 'platforms',
+            attributes_to_include = ['header_image', 'name', 'type', 'steam_appid', 'required_age', 'is_free',
+                                     'short_description', 'supported_languages', 'release_date', 'platforms',
                                      'developers', 'publishers']
 
             for attribute in attributes_to_include:
@@ -128,69 +115,6 @@ def detailedSearch(request, app_id):
 
     return render(request, 'detailed_search.html', {'app_data': app_data})
 
-def modifyProduct(request, id):
-    product = Product.objects.get(id=id)
-    if request.method == 'POST':
-        form = ProductForm(request.POST, instance=product)
-        if form.is_valid():
-            form.save()
-            return redirect('showProducts')
-    else:
-        form = ProductForm(instance=product)
-    context = {'product': product, 'form': form}
-    return render(request, 'modifyProduct.html', context)
-
-def createDeveloper(request):
-    if request.method == 'POST':
-        form = DeveloperForm(request.POST, user=request.user)
-        if form.is_valid():
-            developer = form.save(commit=False)
-            developer.creatorUser = request.user
-            selected_products = form.cleaned_data['products']
-            numProducts = len(selected_products)
-            developer.developedProducts = numProducts
-            developer.save()
-            developer.products.set(selected_products)
-            return redirect('showDevelopers')
-    else:
-        form = DeveloperForm(user=request.user)
-    context = {'form': form}
-    return render(request, 'createDeveloper.html', context)
-
-def showDevelopers(request):
-    developers = Developer.objects.filter(creatorUser=request.user)
-    context = {'developers': developers}
-    return render(request, 'showDevelopers.html', context)
-
-def createPublisher(request):
-    if request.method == 'POST':
-        form = PublisherForm(request.POST, user=request.user)
-        if form.is_valid():
-            publisher = form.save(commit=False)
-            publisher.creatorUser = request.user
-            selected_products = form.cleaned_data['products']
-            numProducts = len(selected_products)
-            publisher.publishedProducts = numProducts
-            publisher.save()
-            publisher.products.set(selected_products)
-            return redirect('showPublishers')
-
-    else:
-        form = PublisherForm(user=request.user)
-    context = {'form': form}
-    return render(request, 'createPublisher.html', context)
-
-def showPublishers(request):
-    publishers = Publisher.objects.filter(creatorUser=request.user)
-    context = {'publishers': publishers}
-    return render(request, 'showPublishers.html', context)
-
-""" def showPublishers(request):
-    publishers = Publisher.objects.all()  # Obtener el editor específico
-    #products = publisher.publishedProducts  # Obtener todos los productos asociados al editor
-    context = {'publishers': publishers}
-    return render(request, 'showPublishers.html', context)"""
-
 
 def createSteamUser(request):
     if request.method == 'POST':
@@ -210,32 +134,13 @@ def createSteamUser(request):
     context = {'form': form}
     return render(request, 'createSteamUser.html', context)
 
-def showSteamUsers(request):
-    steamUsers = SteamUser.objects.filter(creatorUser=request.user)
-    context = {'steamUsers': steamUsers}
-    return render(request, 'showSteamUsers.html', context)
 
-def deletePublisher(request, id):
-    publisher = get_object_or_404(Publisher, pk=id)
-    publisher.delete()
-    return redirect('showPublishers')
-
-def deleteDeveloper(request, id):
-    developer = get_object_or_404(Developer, pk=id)
-    developer.delete()
-    return redirect('showDevelopers')
-
-def deleteSteamUser(request, id):
-    steamUser = get_object_or_404(SteamUser, pk=id)
-    steamUser.delete()
-    return redirect('showSteamUsers')
-
-def modifyDeveloper(request, id):
-    developerObtained = Developer.objects.get(id=id)
+def createDeveloper(request):
     if request.method == 'POST':
-        form = DeveloperForm(request.POST, user=request.user, instance=developerObtained)
+        form = DeveloperForm(request.POST, user=request.user)
         if form.is_valid():
             developer = form.save(commit=False)
+            developer.creatorUser = request.user
             selected_products = form.cleaned_data['products']
             numProducts = len(selected_products)
             developer.developedProducts = numProducts
@@ -243,14 +148,14 @@ def modifyDeveloper(request, id):
             developer.products.set(selected_products)
             return redirect('showDevelopers')
     else:
-        form = DeveloperForm(user=request.user, instance=developerObtained, initial={'name': developerObtained.name, 'products': developerObtained.products.all()})
-    context = {'form': form, 'developer': developerObtained}
-    return render(request, 'modifyDeveloper.html', context)
+        form = DeveloperForm(user=request.user)
+    context = {'form': form}
+    return render(request, 'createDeveloper.html', context)
 
-def modifyPublisher(request, id):
-    publisherObtained = Publisher.objects.get(id=id)
+
+def createPublisher(request):
     if request.method == 'POST':
-        form = PublisherForm(request.POST, user=request.user, instance=publisherObtained)
+        form = PublisherForm(request.POST, user=request.user)
         if form.is_valid():
             publisher = form.save(commit=False)
             publisher.creatorUser = request.user
@@ -262,9 +167,77 @@ def modifyPublisher(request, id):
             return redirect('showPublishers')
 
     else:
-        form = PublisherForm(user=request.user, instance=publisherObtained, initial={'name': publisherObtained.name, 'products': publisherObtained.products.all()})
+        form = PublisherForm(user=request.user)
     context = {'form': form}
-    return render(request, 'modifyPublisher.html', context)
+    return render(request, 'createPublisher.html', context)
+
+
+""" def showPublishers(request):
+    publishers = Publisher.objects.all()  # Obtener el editor específico
+    #products = publisher.publishedProducts  # Obtener todos los productos asociados al editor
+    context = {'publishers': publishers}
+    return render(request, 'showPublishers.html', context)"""
+
+
+def showProducts(request):
+    products = Product.objects.filter(creatorUser=request.user)
+    context = {'products': products}
+    return render(request, 'showProduct.html', context)
+
+
+def showSteamUsers(request):
+    steamUsers = SteamUser.objects.filter(creatorUser=request.user)
+    context = {'steamUsers': steamUsers}
+    return render(request, 'showSteamUsers.html', context)
+
+
+def showPublishers(request):
+    publishers = Publisher.objects.filter(creatorUser=request.user)
+    context = {'publishers': publishers}
+    return render(request, 'showPublishers.html', context)
+
+
+def showDevelopers(request):
+    developers = Developer.objects.filter(creatorUser=request.user)
+    context = {'developers': developers}
+    return render(request, 'showDevelopers.html', context)
+
+
+def deleteProduct(request, id):
+    product = get_object_or_404(Product, pk=id)
+    product.delete()
+    return redirect('showProducts')
+
+
+def deleteSteamUser(request, id):
+    steamUser = get_object_or_404(SteamUser, pk=id)
+    steamUser.delete()
+    return redirect('showSteamUsers')
+
+
+def deletePublisher(request, id):
+    publisher = get_object_or_404(Publisher, pk=id)
+    publisher.delete()
+    return redirect('showPublishers')
+
+
+def deleteDeveloper(request, id):
+    developer = get_object_or_404(Developer, pk=id)
+    developer.delete()
+    return redirect('showDevelopers')
+
+
+def modifyProduct(request, id):
+    product = Product.objects.get(id=id)
+    if request.method == 'POST':
+        form = ProductForm(request.POST, instance=product)
+        if form.is_valid():
+            form.save()
+            return redirect('showProducts')
+    else:
+        form = ProductForm(instance=product)
+    context = {'product': product, 'form': form}
+    return render(request, 'modifyProduct.html', context)
 
 
 def modifySteamUser(request, id):
@@ -281,29 +254,74 @@ def modifySteamUser(request, id):
             steamUser.products.set(products)
             return redirect('showSteamUsers')
 
+        else:
+            form = SteamUserForm(user=request.user, instance=steamUserObtained,
+                                 initial={'name': steamUserObtained.realName,
+                                          'friends': steamUserObtained.friends.all(),
+                                          'products': steamUserObtained.products.all()})
+        context = {'form': form}
+        return render(request, 'modifySteamUser.html', context)
+
+
+def modifyPublisher(request, id):
+    publisherObtained = Publisher.objects.get(id=id)
+    if request.method == 'POST':
+        form = PublisherForm(request.POST, user=request.user, instance=publisherObtained)
+        if form.is_valid():
+            publisher = form.save(commit=False)
+            publisher.creatorUser = request.user
+            selected_products = form.cleaned_data['products']
+            numProducts = len(selected_products)
+            publisher.publishedProducts = numProducts
+            publisher.save()
+            publisher.products.set(selected_products)
+            return redirect('showPublishers')
+
     else:
-        form = SteamUserForm(user=request.user, instance=steamUserObtained, initial={'name': steamUserObtained.realName,
-                                                                                     'friends': steamUserObtained.friends.all(),
-                                                                                     'products': steamUserObtained.products.all()})
+        form = PublisherForm(user=request.user, instance=publisherObtained,
+                             initial={'name': publisherObtained.name, 'products': publisherObtained.products.all()})
     context = {'form': form}
-    return render(request, 'modifySteamUser.html', context)
+    return render(request, 'modifyPublisher.html', context)
+
+
+def modifyDeveloper(request, id):
+    developerObtained = Developer.objects.get(id=id)
+    if request.method == 'POST':
+        form = DeveloperForm(request.POST, user=request.user, instance=developerObtained)
+        if form.is_valid():
+            developer = form.save(commit=False)
+            selected_products = form.cleaned_data['products']
+            numProducts = len(selected_products)
+            developer.developedProducts = numProducts
+            developer.save()
+            developer.products.set(selected_products)
+            return redirect('showDevelopers')
+    else:
+        form = DeveloperForm(user=request.user, instance=developerObtained,
+                             initial={'name': developerObtained.name, 'products': developerObtained.products.all()})
+    context = {'form': form, 'developer': developerObtained}
+    return render(request, 'modifyDeveloper.html', context)
+
 
 def productDetails(request, id):
     product = Product.objects.get(id=id)
     context = {'product': product}
     return render(request, 'productDetails.html', context)
 
-def publisherDetails(request, id):
-    publisher = Publisher.objects.get(id=id)
-    context = {'publisher': publisher}
-    return render(request, 'publisherDetails.html', context)
-
-def developerDetails(request, id):
-    developer = Developer.objects.get(id=id)
-    context = {'developer': developer}
-    return render(request, 'developerDetails.html', context)
 
 def steamUserDetails(request, id):
     steamUser = SteamUser.objects.get(id=id)
     context = {'steamUser': steamUser}
     return render(request, 'steamUserDetails.html', context)
+
+
+def publisherDetails(request, id):
+    publisher = Publisher.objects.get(id=id)
+    context = {'publisher': publisher}
+    return render(request, 'publisherDetails.html', context)
+
+
+def developerDetails(request, id):
+    developer = Developer.objects.get(id=id)
+    context = {'developer': developer}
+    return render(request, 'developerDetails.html', context)
