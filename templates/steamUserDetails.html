@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Steam User Details{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+    <strong>SteamId:</strong> {{ steamUser.steamID }}
+    <br>
+    <strong>Real name:</strong> {{ steamUser.realName }}
+    <br>
+    <strong>Persona name:</strong> {{ steamUser.personaName }}
+    <br>
+    <strong>Country:</strong> {{ steamUser.country }}
+    <br>
+    
+    <strong>Products:</strong>
+    {% for product in steamUser.products.all %}
+        <li>{{ product.name }}</li>
+    {% endfor %}
+    <br>
+    
+    <strong>Friends:</strong>
+    {% for friend in steamUser.friends.all %}
+        <li>{{ friend.personaName }}</li>
+    {% endfor %}
+    <br>
+    <a href="{% url 'modifySteamUser' steamUser.id %}"><button type="submit">Modify</button></a>
+    <a href="{% url 'deleteSteamUser' steamUser.id %}"><button type="submit">Delete</button></a>
+{% else %}
+    <p>You are not logged in</p>
+    <a href="{% url 'login' %}">Log In</a> 
+    <a href="{% url 'signup' %}">Sign Up</a>
+{% endif %}
+{% endblock %}

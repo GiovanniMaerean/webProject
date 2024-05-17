@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Product Details{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+    <strong>Name:</strong> {{ product.name }}
+    <br>
+    <strong>AppId:</strong> {{ product.appId }}
+    <br>
+    <strong>Type:</strong> {{ product.type }}
+    <br>
+    <strong>Age:</strong> {{ product.age }}
+    <br>
+    <strong>Free:</strong> {{ product.free }}
+    <br>
+    <strong>Recommendations:</strong> {{ product.recommendations }}
+    <br>
+    <strong>ReleaseDate:</strong> {{ product.releaseDate }}
+    <br>
+    <strong>Categories:</strong> {{ product.categories }}
+    <br>
+    <strong>Genres:</strong> {{ product.genres }}  
+    <br>
+    <strong>Price:</strong> {{ product.price }}
+    <br>
+    <strong>Discount:</strong> {{ product.discount }}
+    <br>
+    <strong>Languages:</strong> {{ product.languages }}
+    <br>
+    <strong>Description:</strong> {{ product.description }}
+    <br>
+    <a href="{% url 'modifyProduct' product.id %}"><button type="submit">Modify</button></a>
+    <a href="{% url 'deleteProduct' product.id %}"><button type="submit">Delete</button></a>
+{% else %}
+    <p>You are not logged in</p>
+    <a href="{% url 'login' %}">Log In</a> 
+    <a href="{% url 'signup' %}">Sign Up</a>
+{% endif %}
+{% endblock %}

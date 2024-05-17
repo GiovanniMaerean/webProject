@@ -8,6 +8,7 @@
         <li>{{ steamUser.realName }}</li>
         <a href="{% url 'modifySteamUser' steamUser.id %}"><button type="submit">Modify</button></a>
         <a href="{% url 'deleteSteamUser' steamUser.id %}"><button type="submit">Delete</button></a>
+        <a href="{% url 'steamUserDetails' steamUser.id %}"><button type="submit">Show details</button></a>
     {% endfor %}
 {% else %}
     <p>You are not logged in</p>

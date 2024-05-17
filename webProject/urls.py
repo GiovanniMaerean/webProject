@@ -48,5 +48,9 @@ urlpatterns = [
     path('modifyDeveloper/<uuid:id>/', modifyDeveloper, name='modifyDeveloper'),
     path('modifyPublisher/<uuid:id>/', modifyPublisher, name='modifyPublisher'),
     path('modifySteamUser/<uuid:id>/', modifySteamUser, name='modifySteamUser'),
+    path('productDetails/<uuid:id>/', productDetails, name='productDetails'),
+    path('publisherDetails/<uuid:id>/', publisherDetails, name='publisherDetails'),
+    path('developerDetails/<uuid:id>/', developerDetails, name='developerDetails'),
+    path('steamUserDetails/<uuid:id>/', steamUserDetails, name='steamUserDetails'),
 
 ]

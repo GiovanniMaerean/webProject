@@ -287,3 +287,23 @@ def modifySteamUser(request, id):
                                                                                      'products': steamUserObtained.products.all()})
     context = {'form': form}
     return render(request, 'modifySteamUser.html', context)
+
+def productDetails(request, id):
+    product = Product.objects.get(id=id)
+    context = {'product': product}
+    return render(request, 'productDetails.html', context)
+
+def publisherDetails(request, id):
+    publisher = Publisher.objects.get(id=id)
+    context = {'publisher': publisher}
+    return render(request, 'publisherDetails.html', context)
+
+def developerDetails(request, id):
+    developer = Developer.objects.get(id=id)
+    context = {'developer': developer}
+    return render(request, 'developerDetails.html', context)
+
+def steamUserDetails(request, id):
+    steamUser = SteamUser.objects.get(id=id)
+    context = {'steamUser': steamUser}
+    return render(request, 'steamUserDetails.html', context)
