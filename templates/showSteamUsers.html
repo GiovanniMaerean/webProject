@@ -8,9 +8,9 @@
         <ul>
             {% for steamUser in steamUsers %}
                 <li>{{ steamUser.realName }}</li>
-                <a href="{% url 'modifySteamUser' steamUser.id %}"><button type="submit">Modify</button></a>
-                <a href="{% url 'deleteSteamUser' steamUser.id %}"><button type="submit">Delete</button></a>
-                <a href="{% url 'steamUserDetails' steamUser.id %}"><button type="submit">Show details</button></a>
+                <a href="{% url 'modifySteamUser' steamUser.id %}"><button type="submit" class="button">Modify</button></a>
+                <a href="{% url 'deleteSteamUser' steamUser.id %}"><button type="submit" class="deleteButton">Delete</button></a>
+                <a href="{% url 'steamUserDetails' steamUser.id %}"><button type="submit" class="button">Show details</button></a>
             {% endfor %}
         </ul>
     {% else %}

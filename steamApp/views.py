@@ -15,6 +15,7 @@ from steamApp.models import Product, Publisher, Developer, SteamUser
 @csrf_exempt
 @login_required()
 def createProducts(request):
+    error = ""
     if request.method == 'POST':
         form = ProductForm(request.POST)
         if form.is_valid():
@@ -22,16 +23,15 @@ def createProducts(request):
             product.creatorUser = request.user
             product.save()
             return redirect('home')
-        else:
-            # El formulario no es válido, devuelve una respuesta JSON con los errores del formulario
-            print(form.errors)
-            errors = form.errors.as_json()
-            return JsonResponse({'errors': errors}, status=400)  # Bad request status code
 
+        else:
+            error = "Not a valid form"
 
     else:
         form = ProductForm()
-    context = {'form': form}
+    context = {'form': form,
+               'error': error
+               }
 
     return render(request, 'createProduct.html', context)
 

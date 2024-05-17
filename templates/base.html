@@ -8,7 +8,7 @@
   <title>{% block title %}Steam App web{% endblock %}</title>
   
   <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-  <link rel="icon" href="{% static 'img/logo_steam2-ai-brush-removebg-g28ncgnt.png' %}" type="image/png"> 
+  <link rel="icon" href="{% static 'img/logo_steam2-ai-brush-removebg-g28ncgnt.png' %}" type="image/png">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
   <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -16,24 +16,74 @@
 
 
 <body>
-  <header>
-    <div class="header-container">
-        <a href="{% url 'home' %}"><img src="{% static 'img/logo_steam2-ai-brush-removebg-g28ncgnt.png' %}" alt="Logo" class="logo"></a>
-      <h1>Steam web</h1>
-      <nav>
-          <a href="{% url 'createProducts' %}">Add a Product</a>
-          <a href="{% url 'showProducts' %}">Show Products</a>
-          <a href="{% url 'showDevelopers' %}">Show Developers</a>
-          <a href="{% url 'showPublishers' %}">Show Publishers</a>
-          <a href="{% url 'showSteamUsers' %}">Show Steam Users</a>
-          
-          <form action="{% url 'logout' %}" method="post">
-              {% csrf_token %}
-              <button type="submit" class="buttonlogout">Log Out</button>
-          </form>
-      </nav>
+  <nav>
+    <div class="wrapper">
+        <div class="logo"><a href="{% url 'home' %}"><img src="{% static 'img/logo_steam2-ai-brush-removebg-g28ncgnt.png' %}" alt="Logo"></a><h1>Steam web</h1></div>
+        <input type="radio" name="slider" id="menu-btn">
+        <input type="radio" name="slider" id="close-btn">
+        
+        {% if user.is_authenticated %}
+            <ul class="nav-links">
+                <li>
+                    <a href="#" class="desktop-item">SteamUser</a>
+                    <input type="checkbox" id="showDrop1">
+                    <label for="showDrop1" class="mobile-item">SteamUser</label>
+    
+                    <ul class="drop-menu">
+                        <li><a href="{% url 'showSteamUsers' %}" >See all SteamUsers</a></li>
+                        <li><a href="{% url 'createSteamUser' %}" >Add new SteamUser</a></li>
+                    </ul>
+                </li>
+    
+                <li>
+                    <a href="#" class="desktop-item">Products</a>
+                    <input type="checkbox" id="showDrop2">
+                    <label for="showDrop2" class="mobile-item">Products</label>
+    
+                    <ul class="drop-menu">
+                        <li><a href="{% url 'showProducts' %}" >See all Products</a></li>
+                        <li><a href="{% url 'createProducts' %}" >Add new SteamUser</a></li>
+                    </ul>
+                </li>
+    
+                <li>
+                    <a href="#" class="desktop-item">Developers</a>
+                    <input type="checkbox" id="showDrop3">
+                    <label for="showDrop3" class="mobile-item">Developers</label>
+    
+                    <ul class="drop-menu">
+                        <li><a href="{% url 'showDevelopers' %}" >See all Developers</a></li>
+                        <li><a href="{% url 'createDeveloper' %}" >Add new Developers</a></li>
+                    </ul>
+                </li>
+    
+                <li>
+                    <a href="#" class="desktop-item">Publishers</a>
+                    <input type="checkbox" id="showDrop4">
+                    <label for="showDrop4" class="mobile-item">Publishers</label>
+    
+                    <ul class="drop-menu">
+                        <li><a href="{% url 'showPublishers' %}" >See all Publishers</a></li>
+                        <li><a href="{% url 'createPublisher' %}" >Add new Publishers</a></li>
+                    </ul>
+                </li>
+    
+                <li>
+                    <form action="{% url 'logout' %}" method="post">
+                          {% csrf_token %}
+                          <button type="submit" class="buttonlogout">Log Out</button>
+                      </form>
+                </li>
+            </ul>
+            
+          <label for="menu-btn" class="btn menu-btn"><i class="fas fa-bars"></i></label>
+            
+        {% else %}
+            
+        {% endif %}
+        
     </div>
-  </header>
+  </nav>
 
   <main>
     <div class = "marginForMainContent" >

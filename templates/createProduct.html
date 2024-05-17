@@ -108,6 +108,12 @@ $(document).ready(function(){
     
     Add your Steam products here
     <form method="post">
+        {% if error %}
+                <h3 style="color: darkred;">{{ error }}</h3>
+
+        {% endif %}
+
+
         {% csrf_token %}
         <table>
             <tr>

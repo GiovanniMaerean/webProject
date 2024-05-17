@@ -9,7 +9,7 @@
             {% for product in products %}
                 <li>{{ product.name }}</li>
                 <a href="{% url 'modifyProduct' product.id %}"><button type="submit" class="button">Modify</button></a>
-                <a href="{% url 'deleteProduct' product.id %}"><button type="submit" class="button">Delete</button></a>
+                <a href="{% url 'deleteProduct' product.id %}"><button type="submit" class="deleteButton">Delete</button></a>
                 <a href="{% url 'productDetails' product.id %}"><button type="submit" class="button">Show details</button></a>
             {% endfor %}
         </ul>

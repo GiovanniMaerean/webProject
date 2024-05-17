@@ -5,9 +5,19 @@
 {% block content %}
      
     <form method="post">
+        {% for field in form %}
+            {% if field.errors %}
+                <ul>
+                    {% for error in field.errors %}
+                        <li>{{ error }}</li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+        {% endfor %}
         {% csrf_token %}
+        
         {{ form.as_p }}
-        <button type="submit">Add developer</button>
+        <button type="submit" class="button">Add developer</button>
     </form>
     
 {% endblock %}

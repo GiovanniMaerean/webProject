@@ -1,9 +1,12 @@
+
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}Search{% endblock %}
 
 {% block content %}
-   
+<link rel="stylesheet" href="{% static 'css/paginator.css' %}">
+
 
 
     {% if search_value %}
@@ -11,7 +14,7 @@
         <h2>Products:</h2>
         <ul>
             {% for product in entity %}
-                <li><a href="{% url 'detailedSearch' product.appid %}">{{ product.name }} ({{ product.appid }})</a></li>
+                <li><a href="{% url 'detailedSearch' product.appid %}" class="product-link">{{ product.name }} ({{ product.appid }})</a></li>
             {% endfor %}
         </ul>
     {% endif %}
@@ -19,10 +22,6 @@
     <div>
         {% include 'paginator.html' %}
     </div>
-    <form action="{% url 'logout' %}" method="post">
-      {% csrf_token %}
-      <button type="submit">Log Out</button>
-    </form>
-    <a href="{% url 'createProducts' %}">Add a Product</a>
+    
 
 {% endblock %}
