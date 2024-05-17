@@ -29,7 +29,12 @@
       {% csrf_token %}
       <button type="submit">Log Out</button>
     </form>
-    <a href="{% url 'createProducts' %}">Add a Product</a>
+    <a href="{% url 'createProducts' %}"><button type="submit">Add a Product</button></a>
+    <a href="{% url 'showProducts' %}"><button type="submit">Show Products</button></a>
+    <a href="{% url 'showDevelopers' %}"><button type="submit">Show Developers</button></a>
+    <a href="{% url 'showPublishers' %}"><button type="submit">Show Publishers</button></a>
+    <a href="{% url 'showSteamUsers' %}"><button type="submit">Show Steam Users</button></a>
+    
 {% else %}
     <p>You are not logged in</p>
     <a href="{% url 'login' %}">Log In</a> 

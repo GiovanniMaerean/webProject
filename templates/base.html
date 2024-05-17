@@ -18,10 +18,19 @@
 <body>
   <header>
     <div class="header-container">
-      <img src="{% static 'img/logo_steam2-ai-brush-removebg-g28ncgnt.png' %}" alt="Logo" class="logo">
+        <a href="{% url 'home' %}"><img src="{% static 'img/logo_steam2-ai-brush-removebg-g28ncgnt.png' %}" alt="Logo" class="logo"></a>
       <h1>Steam web</h1>
-      <nav> <!-- Barra de navegación más gruesa y larga -->
-        <!-- Aquí irían los elementos de la barra de navegación -->
+      <nav>
+          <a href="{% url 'createProducts' %}"><button type="submit">Add a Product</button></a>
+          <a href="{% url 'showProducts' %}"><button type="submit">Show Products</button></a>
+          <a href="{% url 'showDevelopers' %}"><button type="submit">Show Developers</button></a>
+          <a href="{% url 'showPublishers' %}"><button type="submit">Show Publishers</button></a>
+          <a href="{% url 'showSteamUsers' %}"><button type="submit">Show Steam Users</button></a>
+          
+          <form action="{% url 'logout' %}" method="post">
+              {% csrf_token %}
+              <button type="submit">Log Out</button>
+          </form>
       </nav>
     </div>
   </header>
