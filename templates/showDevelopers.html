@@ -4,12 +4,18 @@
 
 {% block content %}
 {% if user.is_authenticated %}
-    {% for developer in developers %}
-        <li>{{ developer.name }}</li>
-        <a href="{% url 'modifyDeveloper' developer.id %}"><button type="submit">Modify</button></a>
-        <a href="{% url 'deleteDeveloper' developer.id %}"><button type="submit">Delete</button></a>
-        <a href="{% url 'developerDetails' developer.id %}"><button type="submit">Show details</button></a>
-    {% endfor %}
+    {% if developers %}
+        <ul>
+            {% for developer in developers %}
+                <li>{{ developer.name }}</li>
+                <a href="{% url 'modifyDeveloper' developer.id %}"><button type="submit">Modify</button></a>
+                <a href="{% url 'deleteDeveloper' developer.id %}"><button type="submit">Delete</button></a>
+                <a href="{% url 'developerDetails' developer.id %}"><button type="submit">Show details</button></a>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No developers found.</p>
+    {% endif %}
 {% else %}
     <p>You are not logged in</p>
     <a href="{% url 'login' %}">Log In</a> 

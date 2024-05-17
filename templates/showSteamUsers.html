@@ -4,12 +4,18 @@
 
 {% block content %}
 {% if user.is_authenticated %}
-    {% for steamUser in steamUsers %}
-        <li>{{ steamUser.realName }}</li>
-        <a href="{% url 'modifySteamUser' steamUser.id %}"><button type="submit">Modify</button></a>
-        <a href="{% url 'deleteSteamUser' steamUser.id %}"><button type="submit">Delete</button></a>
-        <a href="{% url 'steamUserDetails' steamUser.id %}"><button type="submit">Show details</button></a>
-    {% endfor %}
+    {% if steamUsers %}
+        <ul>
+            {% for steamUser in steamUsers %}
+                <li>{{ steamUser.realName }}</li>
+                <a href="{% url 'modifySteamUser' steamUser.id %}"><button type="submit">Modify</button></a>
+                <a href="{% url 'deleteSteamUser' steamUser.id %}"><button type="submit">Delete</button></a>
+                <a href="{% url 'steamUserDetails' steamUser.id %}"><button type="submit">Show details</button></a>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No steam users found.</p>
+    {% endif %}
 {% else %}
     <p>You are not logged in</p>
     <a href="{% url 'login' %}">Log In</a> 
