@@ -28,7 +28,7 @@ nav {
   display: flex;
   align-items: center;
   background-color: #3b6591;
-  height: 80px;
+  height: 60px;
   padding: 0 20px;
   width: calc(100% - 40px);
 }
@@ -80,7 +80,7 @@ h1 {
 }
 
 .footer {
-  background: #00060e;
+  background: #3b6591;
   padding: 20px 50px;
   text-align: center;
   color: #fff;
