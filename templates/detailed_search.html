@@ -22,11 +22,5 @@
     {% else %}
         <p>Details not found</p>
     {% endif %}
-    
-    <form action="{% url 'logout' %}" method="post">
-      {% csrf_token %}
-      <button type="submit">Log Out</button>
-    </form>
-    <a href="{% url 'createProducts' %}">Add a Product</a>
 
 {% endblock %}
