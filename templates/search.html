@@ -3,8 +3,7 @@
 {% block title %}Search{% endblock %}
 
 {% block content %}
-{% if user.is_authenticated %}
-    
+
     {% if search_value %}
         <h2 id="search_value">Search Results for: {{ search_value }}</h2>
         <h2>Products:</h2>
@@ -23,9 +22,5 @@
       <button type="submit">Log Out</button>
     </form>
     <a href="{% url 'createProducts' %}">Add a Product</a>
-{% else %}
-    <p>You are not logged in</p>
-    <a href="{% url 'login' %}">Log In</a> 
-    <a href="{% url 'signup' %}">Sign Up</a>
-{% endif %}
+
 {% endblock %}

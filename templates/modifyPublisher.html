@@ -4,18 +4,11 @@
 
 {% block content %}
 
-{% if user.is_authenticated %}
-
     Modify your Steam publisher here
     <form method="post">
         {% csrf_token %}
         {{ form.as_table }}
         <button type="submit">Modify publisher</button>
     </form>
-
-{% else %}
-    <p>You are not logged in</p>
-    <a href="{% url 'login' %}">Log In</a>
-    <a href="{% url 'signup' %}">Sign Up</a>
-{% endif %}
+    
 {% endblock %}

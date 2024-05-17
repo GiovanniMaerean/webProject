@@ -1,4 +1,5 @@
 import requests
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.http import JsonResponse, Http404
 from django.shortcuts import render, redirect, get_object_or_404
@@ -12,6 +13,7 @@ from steamApp.models import Product, Publisher, Developer, SteamUser
 
 
 @csrf_exempt
+@login_required()
 def createProducts(request):
     if request.method == 'POST':
         form = ProductForm(request.POST)
@@ -33,21 +35,21 @@ def createProducts(request):
 
     return render(request, 'createProduct.html', context)
 
-
+@login_required()
 def get_steam_app_list(request):
     url = "https://api.steampowered.com/ISteamApps/GetAppList/v2/"
     response = requests.get(url)
     data = response.json()
     return JsonResponse(data)
 
-
+@login_required()
 def get_steam_app_details(request, app_id):
     url = f"https://store.steampowered.com/api/appdetails?appids={app_id}"
     response = requests.get(url)
     data = response.json()
     return JsonResponse(data)
 
-
+@login_required()
 def search(request, inputValue):
     search_value = inputValue.lower()
     products = []
@@ -75,7 +77,7 @@ def search(request, inputValue):
 
     return render(request, 'search.html', context)
 
-
+@login_required()
 def detailedSearch(request, app_id):
     response = requests.get(f'https://store.steampowered.com/api/appdetails?appids={app_id}')
     print(response.status_code)
@@ -116,6 +118,7 @@ def detailedSearch(request, app_id):
     return render(request, 'detailed_search.html', {'app_data': app_data})
 
 
+@login_required()
 def createSteamUser(request):
     if request.method == 'POST':
         form = SteamUserForm(request.POST, user=request.user)
@@ -134,7 +137,7 @@ def createSteamUser(request):
     context = {'form': form}
     return render(request, 'createSteamUser.html', context)
 
-
+@login_required()
 def createDeveloper(request):
     if request.method == 'POST':
         form = DeveloperForm(request.POST, user=request.user)
@@ -152,7 +155,7 @@ def createDeveloper(request):
     context = {'form': form}
     return render(request, 'createDeveloper.html', context)
 
-
+@login_required()
 def createPublisher(request):
     if request.method == 'POST':
         form = PublisherForm(request.POST, user=request.user)
@@ -178,55 +181,55 @@ def createPublisher(request):
     context = {'publishers': publishers}
     return render(request, 'showPublishers.html', context)"""
 
-
+@login_required()
 def showProducts(request):
     products = Product.objects.filter(creatorUser=request.user)
     context = {'products': products}
     return render(request, 'showProduct.html', context)
 
-
+@login_required()
 def showSteamUsers(request):
     steamUsers = SteamUser.objects.filter(creatorUser=request.user)
     context = {'steamUsers': steamUsers}
     return render(request, 'showSteamUsers.html', context)
 
-
+@login_required()
 def showPublishers(request):
     publishers = Publisher.objects.filter(creatorUser=request.user)
     context = {'publishers': publishers}
     return render(request, 'showPublishers.html', context)
 
-
+@login_required()
 def showDevelopers(request):
     developers = Developer.objects.filter(creatorUser=request.user)
     context = {'developers': developers}
     return render(request, 'showDevelopers.html', context)
 
-
+@login_required()
 def deleteProduct(request, id):
     product = get_object_or_404(Product, pk=id)
     product.delete()
     return redirect('showProducts')
 
-
+@login_required()
 def deleteSteamUser(request, id):
     steamUser = get_object_or_404(SteamUser, pk=id)
     steamUser.delete()
     return redirect('showSteamUsers')
 
-
+@login_required()
 def deletePublisher(request, id):
     publisher = get_object_or_404(Publisher, pk=id)
     publisher.delete()
     return redirect('showPublishers')
 
-
+@login_required()
 def deleteDeveloper(request, id):
     developer = get_object_or_404(Developer, pk=id)
     developer.delete()
     return redirect('showDevelopers')
 
-
+@login_required()
 def modifyProduct(request, id):
     product = Product.objects.get(id=id)
     if request.method == 'POST':
@@ -239,7 +242,7 @@ def modifyProduct(request, id):
     context = {'product': product, 'form': form}
     return render(request, 'modifyProduct.html', context)
 
-
+@login_required()
 def modifySteamUser(request, id):
     steamUserObtained = SteamUser.objects.get(id=id)
     if request.method == 'POST':
@@ -262,7 +265,7 @@ def modifySteamUser(request, id):
         context = {'form': form}
         return render(request, 'modifySteamUser.html', context)
 
-
+@login_required()
 def modifyPublisher(request, id):
     publisherObtained = Publisher.objects.get(id=id)
     if request.method == 'POST':
@@ -283,7 +286,7 @@ def modifyPublisher(request, id):
     context = {'form': form}
     return render(request, 'modifyPublisher.html', context)
 
-
+@login_required()
 def modifyDeveloper(request, id):
     developerObtained = Developer.objects.get(id=id)
     if request.method == 'POST':
@@ -302,25 +305,25 @@ def modifyDeveloper(request, id):
     context = {'form': form, 'developer': developerObtained}
     return render(request, 'modifyDeveloper.html', context)
 
-
+@login_required()
 def productDetails(request, id):
     product = Product.objects.get(id=id)
     context = {'product': product}
     return render(request, 'productDetails.html', context)
 
-
+@login_required()
 def steamUserDetails(request, id):
     steamUser = SteamUser.objects.get(id=id)
     context = {'steamUser': steamUser}
     return render(request, 'steamUserDetails.html', context)
 
-
+@login_required()
 def publisherDetails(request, id):
     publisher = Publisher.objects.get(id=id)
     context = {'publisher': publisher}
     return render(request, 'publisherDetails.html', context)
 
-
+@login_required()
 def developerDetails(request, id):
     developer = Developer.objects.get(id=id)
     context = {'developer': developer}

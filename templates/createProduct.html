@@ -106,8 +106,6 @@ $(document).ready(function(){
 
 </script>
     
-{% if user.is_authenticated %}
-    
     Add your Steam products here
     <form method="post">
         {% csrf_token %}
@@ -193,11 +191,5 @@ $(document).ready(function(){
 
         <button type="submit">Add product</button>
     </form>
-
-
-{% else %}
-    <p>You are not logged in</p>
-    <a href="{% url 'login' %}">Log In</a>
-    <a href="{% url 'signup' %}">Sign Up</a>
-{% endif %}
+    
 {% endblock %}

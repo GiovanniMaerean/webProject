@@ -3,7 +3,7 @@
 {% block title %}Developer Details{% endblock %}
 
 {% block content %}
-{% if user.is_authenticated %}
+
     <strong>Name:</strong> {{ developer.name }}
     <br>
     <strong>Developed products:</strong> {{ developer.developedProducts }}
@@ -15,9 +15,5 @@
     <br>
     <a href="{% url 'modifyDeveloper' developer.id %}"><button type="submit">Modify</button></a>
     <a href="{% url 'deleteDeveloper' developer.id %}"><button type="submit">Delete</button></a>
-{% else %}
-    <p>You are not logged in</p>
-    <a href="{% url 'login' %}">Log In</a> 
-    <a href="{% url 'signup' %}">Sign Up</a>
-{% endif %}
+
 {% endblock %}

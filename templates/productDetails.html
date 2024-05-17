@@ -3,7 +3,7 @@
 {% block title %}Product Details{% endblock %}
 
 {% block content %}
-{% if user.is_authenticated %}
+
     <strong>Name:</strong> {{ product.name }}
     <br>
     <strong>AppId:</strong> {{ product.appId }}
@@ -32,9 +32,5 @@
     <br>
     <a href="{% url 'modifyProduct' product.id %}"><button type="submit">Modify</button></a>
     <a href="{% url 'deleteProduct' product.id %}"><button type="submit">Delete</button></a>
-{% else %}
-    <p>You are not logged in</p>
-    <a href="{% url 'login' %}">Log In</a> 
-    <a href="{% url 'signup' %}">Sign Up</a>
-{% endif %}
+
 {% endblock %}

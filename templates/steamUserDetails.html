@@ -3,7 +3,7 @@
 {% block title %}Steam User Details{% endblock %}
 
 {% block content %}
-{% if user.is_authenticated %}
+
     <strong>SteamId:</strong> {{ steamUser.steamID }}
     <br>
     <strong>Real name:</strong> {{ steamUser.realName }}
@@ -26,9 +26,5 @@
     <br>
     <a href="{% url 'modifySteamUser' steamUser.id %}"><button type="submit">Modify</button></a>
     <a href="{% url 'deleteSteamUser' steamUser.id %}"><button type="submit">Delete</button></a>
-{% else %}
-    <p>You are not logged in</p>
-    <a href="{% url 'login' %}">Log In</a> 
-    <a href="{% url 'signup' %}">Sign Up</a>
-{% endif %}
+
 {% endblock %}

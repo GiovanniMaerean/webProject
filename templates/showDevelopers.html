@@ -3,7 +3,7 @@
 {% block title %}Show Developers{% endblock %}
 
 {% block content %}
-{% if user.is_authenticated %}
+
     {% if developers %}
         <ul>
             {% for developer in developers %}
@@ -16,9 +16,5 @@
     {% else %}
         <p>No developers found.</p>
     {% endif %}
-{% else %}
-    <p>You are not logged in</p>
-    <a href="{% url 'login' %}">Log In</a> 
-    <a href="{% url 'signup' %}">Sign Up</a>
-{% endif %}
+
 {% endblock %}

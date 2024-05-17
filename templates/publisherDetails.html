@@ -3,7 +3,7 @@
 {% block title %}Publisher Details{% endblock %}
 
 {% block content %}
-{% if user.is_authenticated %}
+
     <strong>Name:</strong> {{ publisher.name }}
     <br>
     <strong>Published products:</strong> {{ publisher.publishedProducts }}
@@ -15,9 +15,5 @@
     <br>
     <a href="{% url 'modifyPublisher' publisher.id %}"><button type="submit">Modify</button></a>
     <a href="{% url 'deletePublisher' publisher.id %}"><button type="submit">Delete</button></a>
-{% else %}
-    <p>You are not logged in</p>
-    <a href="{% url 'login' %}">Log In</a> 
-    <a href="{% url 'signup' %}">Sign Up</a>
-{% endif %}
+
 {% endblock %}

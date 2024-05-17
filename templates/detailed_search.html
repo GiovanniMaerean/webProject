@@ -3,8 +3,7 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-{% if user.is_authenticated %}
-    
+
     {% if app_data %}
         <h1>Product Details</h1>
         <ul>
@@ -29,9 +28,5 @@
       <button type="submit">Log Out</button>
     </form>
     <a href="{% url 'createProducts' %}">Add a Product</a>
-{% else %}
-    <p>You are not logged in</p>
-    <a href="{% url 'login' %}">Log In</a> 
-    <a href="{% url 'signup' %}">Sign Up</a>
-{% endif %}
+
 {% endblock %}
