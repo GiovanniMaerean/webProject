@@ -139,6 +139,7 @@ def createSteamUser(request):
     else:
         form = SteamUserForm(user=request.user)
     context = {'form': form}
+
     return render(request, 'createSteamUser.html', context)
 
 
