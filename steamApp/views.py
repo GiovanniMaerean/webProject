@@ -22,7 +22,7 @@ def createProducts(request):
             product = form.save(commit=False)
             product.creatorUser = request.user
             product.save()
-            return redirect('home')
+            return redirect('showProducts')
 
         else:
             error = "Not a valid form"
