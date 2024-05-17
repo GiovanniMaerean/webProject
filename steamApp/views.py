@@ -1,6 +1,7 @@
 import requests
+from django.core.paginator import Paginator
 from django.shortcuts import render, redirect, get_object_or_404
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse, HttpResponse, Http404
 from django.views.decorators.csrf import csrf_exempt
 
 from steamApp.forms import ProductForm, DeveloperForm, PublisherForm, SteamUserForm
@@ -59,23 +60,34 @@ def deleteProduct(request, id):
     return redirect('showProducts')
 
 
-def search(request):
-    search_value = None
+def search(request, inputValue):
+    search_value = inputValue.lower()
     products = []
+    page = request.GET.get('page', 1)
+    response = requests.get('https://api.steampowered.com/ISteamApps/GetAppList/v2/')
 
-    if request.method == 'POST':
-        search_value = request.POST.get('inputValue').lower()
-        # Realizar la solicitud a la API de Steam para obtener la lista de productos
-        response = requests.get('https://api.steampowered.com/ISteamApps/GetAppList/v2/')
+    if response.status_code == 200:
+        app_list = response.json()['applist']['apps']
+        products = [{'appid': app['appid'], 'name': app['name']} for app in app_list if
+                    app['name'].lower().startswith(search_value)]
 
-        if response.status_code == 200:
-            app_list = response.json()['applist']['apps']
-            # Filtrar la lista de productos para obtener aquellos que comienzan con el valor de búsqueda
-            products = [{'appid': app['appid'], 'name': app['name']} for app in app_list if app['name'].lower().startswith(search_value)]
+        products.sort(key=lambda x: x['name'].lower())
 
-            products.sort(key=lambda x: x['name'].lower())
 
-    return render(request, 'search.html', {'search_value': search_value, 'products': products})
+    try:
+        paginator = Paginator(products, 10)
+        products = paginator.page(page)
+    except:
+        raise Http404
+
+    context = {
+        'search_value': search_value,
+        'entity': products,
+        'paginator': paginator
+    }
+
+    return render(request, 'search.html', context)
+
 
 
 def detailedSearch(request, app_id):

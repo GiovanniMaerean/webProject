@@ -4,20 +4,27 @@
 
 {% block content %}
 {% if user.is_authenticated %}
+    <script type="text/javascript">
+        function searchFunction(event) {
+            event.preventDefault();
+            const inputValue = document.getElementById('inputValue').value;
+            window.location.href = "{% url 'search' 'placeholder' %}".replace('placeholder', encodeURIComponent(inputValue));
+        }
+    </script>
+    
     Hi {{ user.username }}!
-    <form action="{% url 'search' %}" method="post">
-    {% csrf_token %}
-    <table>
-        <tr>
-            <td>
-                <input type="text" name="inputValue" id="inputValue">
-            </td>
-            <td>
-                <button type="submit">Search</button>
-            </td>
-        </tr>
-    </table>
-</form>
+    <form onsubmit="searchFunction(event);">
+        <table>
+            <tr>
+                <td>
+                    <input type="text" name="inputValue" id="inputValue">
+                </td>
+                <td>
+                    <button type="submit">Search</button>
+                </td>
+            </tr>
+        </table>
+    </form>
     <form action="{% url 'logout' %}" method="post">
       {% csrf_token %}
       <button type="submit">Log Out</button>

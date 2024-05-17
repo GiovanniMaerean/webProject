@@ -1,20 +1,23 @@
 {% extends "base.html" %}
 
-{% block title %}Home{% endblock %}
+{% block title %}Search{% endblock %}
 
 {% block content %}
 {% if user.is_authenticated %}
     
     {% if search_value %}
-        <h2>Search Results for: {{ search_value }}</h2>
+        <h2 id="search_value">Search Results for: {{ search_value }}</h2>
         <h2>Products:</h2>
         <ul>
-            {% for product in products %}
+            {% for product in entity %}
                 <li><a href="{% url 'detailedSearch' product.appid %}">{{ product.name }} ({{ product.appid }})</a></li>
             {% endfor %}
         </ul>
     {% endif %}
-    
+
+    <div>
+        {% include 'paginator.html' %}
+    </div>
     <form action="{% url 'logout' %}" method="post">
       {% csrf_token %}
       <button type="submit">Log Out</button>
