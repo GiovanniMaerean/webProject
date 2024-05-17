@@ -15,6 +15,7 @@ class PublisherForm(forms.ModelForm):
         label="Products",
         queryset=Product.objects.none(),
         widget=CheckboxSelectMultiple(attrs={"class": "form-check-input"}),
+        required=False,
     )
 
     class Meta:
@@ -29,11 +30,14 @@ class PublisherForm(forms.ModelForm):
 
 
 class DeveloperForm(forms.ModelForm):
+
     products = forms.ModelMultipleChoiceField(
         label="Products",
         queryset=Product.objects.none(),
         widget=CheckboxSelectMultiple(attrs={"class": "form-check-input"}),
+        required=False,
     )
+
 
     class Meta:
         model = Developer
@@ -46,7 +50,27 @@ class DeveloperForm(forms.ModelForm):
 
 
 class SteamUserForm(forms.ModelForm):
+    products = forms.ModelMultipleChoiceField(
+        label="Products",
+        queryset=Product.objects.none(),
+        widget=CheckboxSelectMultiple(attrs={"class": "form-check-input"}),
+        required=False,
+    )
+
+    friends = forms.ModelMultipleChoiceField(
+        label="Friends",
+        queryset=Product.objects.none(),
+        widget=CheckboxSelectMultiple(attrs={"class": "form-check-input"}),
+        required=False,
+    )
+
     class Meta:
         model = SteamUser
-        fields = "__all__"
+        fields = '__all__'
         exclude = ["id", "creatorUser"]
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+        self.fields['products'].queryset = Product.objects.filter(creatorUser=user)
+        self.fields['friends'].queryset = SteamUser.objects.filter(creatorUser=user)

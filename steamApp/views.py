@@ -182,15 +182,19 @@ def showPublishers(request):
 
 def createSteamUser(request):
     if request.method == 'POST':
-        form = SteamUserForm(request.POST)
+        form = SteamUserForm(request.POST, user=request.user)
         if form.is_valid():
             steamUser = form.save(commit=False)
             steamUser.creatorUser = request.user
+            friends = form.cleaned_data['friends']
+            products = form.cleaned_data['products']
             steamUser.save()
+            steamUser.friends.set(friends)
+            steamUser.products.set(products)
             return redirect('showSteamUsers')
 
     else:
-        form = SteamUserForm()
+        form = SteamUserForm(user=request.user)
     context = {'form': form}
     return render(request, 'createSteamUser.html', context)
 
@@ -198,3 +202,76 @@ def showSteamUsers(request):
     steamUsers = SteamUser.objects.filter(creatorUser=request.user)
     context = {'steamUsers': steamUsers}
     return render(request, 'showSteamUsers.html', context)
+
+def deletePublisher(request, id):
+    publisher = get_object_or_404(Publisher, pk=id)
+    publisher.delete()
+    return redirect('showPublishers')
+
+def deleteDeveloper(request, id):
+    developer = get_object_or_404(Developer, pk=id)
+    developer.delete()
+    return redirect('showDevelopers')
+
+def deleteSteamUser(request, id):
+    steamUser = get_object_or_404(SteamUser, pk=id)
+    steamUser.delete()
+    return redirect('showSteamUsers')
+
+def modifyDeveloper(request, id):
+    developerObtained = Developer.objects.get(id=id)
+    if request.method == 'POST':
+        form = DeveloperForm(request.POST, user=request.user, instance=developerObtained)
+        if form.is_valid():
+            developer = form.save(commit=False)
+            selected_products = form.cleaned_data['products']
+            numProducts = len(selected_products)
+            developer.developedProducts = numProducts
+            developer.save()
+            developer.products.set(selected_products)
+            return redirect('showDevelopers')
+    else:
+        form = DeveloperForm(user=request.user, instance=developerObtained, initial={'name': developerObtained.name, 'products': developerObtained.products.all()})
+    context = {'form': form, 'developer': developerObtained}
+    return render(request, 'modifyDeveloper.html', context)
+
+def modifyPublisher(request, id):
+    publisherObtained = Publisher.objects.get(id=id)
+    if request.method == 'POST':
+        form = PublisherForm(request.POST, user=request.user, instance=publisherObtained)
+        if form.is_valid():
+            publisher = form.save(commit=False)
+            publisher.creatorUser = request.user
+            selected_products = form.cleaned_data['products']
+            numProducts = len(selected_products)
+            publisher.publishedProducts = numProducts
+            publisher.save()
+            publisher.products.set(selected_products)
+            return redirect('showPublishers')
+
+    else:
+        form = PublisherForm(user=request.user, instance=publisherObtained, initial={'name': publisherObtained.name, 'products': publisherObtained.products.all()})
+    context = {'form': form}
+    return render(request, 'modifyPublisher.html', context)
+
+
+def modifySteamUser(request, id):
+    steamUserObtained = SteamUser.objects.get(id=id)
+    if request.method == 'POST':
+        form = SteamUserForm(request.POST, user=request.user, instance=steamUserObtained)
+        if form.is_valid():
+            steamUser = form.save(commit=False)
+            steamUser.creatorUser = request.user
+            friends = form.cleaned_data['friends']
+            products = form.cleaned_data['products']
+            steamUser.save()
+            steamUser.friends.set(friends)
+            steamUser.products.set(products)
+            return redirect('showSteamUsers')
+
+    else:
+        form = SteamUserForm(user=request.user, instance=steamUserObtained, initial={'name': steamUserObtained.realName,
+                                                                                     'friends': steamUserObtained.friends.all(),
+                                                                                     'products': steamUserObtained.products.all()})
+    context = {'form': form}
+    return render(request, 'modifySteamUser.html', context)

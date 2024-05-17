@@ -6,6 +6,8 @@
 {% if user.is_authenticated %}
     {% for developer in developers %}
         <li>{{ developer.name }}</li>
+        <a href="{% url 'modifyDeveloper' developer.id %}"><button type="submit">Modify</button></a>
+        <a href="{% url 'deleteDeveloper' developer.id %}"><button type="submit">Delete</button></a>
     {% endfor %}
 {% else %}
     <p>You are not logged in</p>
