@@ -9,7 +9,15 @@
         <h1>Product Details</h1>
         <ul>
             {% for key, value in app_data.items %}
-                <li><strong>{{ key }}:</strong> {{ value }}</li>
+                {% if key == 'header_image' %}
+                    <li>
+                        <strong>{{ key }}:</strong>
+                        <br>
+                        <img src = "{{ value }}">
+                    </li>
+                {% else %}
+                    <li><strong>{{ key }}:</strong> {{ value }}</li>
+                {% endif %}
             {% endfor %}
         </ul>
     {% else %}

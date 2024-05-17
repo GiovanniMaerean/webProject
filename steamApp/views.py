@@ -102,7 +102,7 @@ def detailedSearch(request, app_id):
             print("Goooood")
             app_info = data[str(app_id)]['data']
             # Lista de atributos que deseas incluir en el contexto
-            attributes_to_include = ['type','name','steam_appid','required_age','is_free', 'short_description','supported_languages', 'release_date', 'platforms',
+            attributes_to_include = ['header_image','name','type','steam_appid','required_age','is_free', 'short_description','supported_languages', 'release_date', 'platforms',
                                      'developers', 'publishers']
 
             for attribute in attributes_to_include:
