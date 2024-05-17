@@ -151,4 +151,124 @@ class CreatePublisherTestCase(TestCase):
                              target_status_code=200)
 
 
+class ModifyProductTestCase(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='testuser', password='12345')
+
+        self.product = Product.objects.create(
+            name='Test Product',
+            appId=123,
+            type='Test Type',
+            age=18,
+            free=True,
+            recommendations='10',
+            releaseDate='2024-05-17',
+            categories='Test Category',
+            genres='Test Genre',
+            price=19.99,
+            discount=10,
+            languages='English',
+            description='Test Description',
+            creatorUser=self.user
+        )
+
+    def test_modify_product(self):
+        self.client.login(username='testuser', password='12345')
+
+        url = reverse('modifyProduct', kwargs={'id': self.product.id})
+
+        data = {
+            'name': 'Modified Test Product',
+            'appId': '456',
+            'type': 'Modified Test Type',
+            'age': '21',
+            'free': False,
+            'recommendations': '20',
+            'releaseDate': '2025-05-17',
+            'categories': 'Modified Test Category',
+            'genres': 'Modified Test Genre',
+            'price': '29.99',
+            'discount': '20',
+            'languages': 'Spanish',
+            'description': 'Modified Test Description'
+        }
+
+        response = self.client.post(url, data)
+
+        self.assertEqual(response.status_code, 302)
+
+        self.product.refresh_from_db()
+
+        self.assertEqual(self.product.name, 'Modified Test Product')
+        self.assertEqual(self.product.appId, 456)
+
+    def test_product_modify_invalid_form(self):
+        self.client.login(username='testuser', password='12345')
+        url = reverse('modifyProduct', kwargs={'id': self.product.id})
+        data = {}
+        response = self.client.post(url, data)
+
+        self.assertEqual(response.status_code, 200)
+        self.product.refresh_from_db()
+
+        self.assertEqual(self.product.appId, 123)
+
+    def test_product_modify_unauthenticated_user(self):
+        url = reverse('modifyProduct', kwargs={'id': self.product.id})
+        data = {}
+        response = self.client.post(url, data)
+        self.assertRedirects(response, f'/accounts/login/?next={url}', status_code=302,
+                             target_status_code=200)
+
+
+class ModifySteamUserTestCase(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='testuser', password='12345')
+        self.steam_user = SteamUser.objects.create(
+            steamID=1234,
+            realName='Test User',
+            personaName='Persona Name',
+            country='Spain',
+            creatorUser=self.user
+        )
+
+    def test_modify_steam_user(self):
+        self.client.login(username='testuser', password='12345')
+
+        url = reverse('modifySteamUser', kwargs={'id': self.steam_user.id})
+
+        data = {
+            'steamID': '5678',
+            'realName': 'Modified Name',
+            'personaName': 'Modified Persona',
+            'country': 'USA',
+        }
+
+        response = self.client.post(url, data)
+
+        self.assertEqual(response.status_code, 302)
+
+        self.steam_user.refresh_from_db()
+
+        self.assertEqual(self.steam_user.realName, 'Modified Name')
+        self.assertEqual(self.steam_user.steamID, 5678)
+
+
+    def test_steam_user_modify_invalid_form(self):
+        self.client.login(username='testuser', password='12345')
+        url = reverse('modifySteamUser', kwargs={'id': self.steam_user.id})
+        data = {}
+        response = self.client.post(url, data)
+
+        self.assertEqual(response.status_code, 200)
+        self.steam_user.refresh_from_db()
+
+        self.assertEqual(self.steam_user.steamID, 1234)
+
+    def test_steam_user_modify_unauthenticated_user(self):
+        url = reverse('modifySteamUser', kwargs={'id': self.steam_user.id})
+        data = {}
+        response = self.client.post(url, data)
+        self.assertRedirects(response, f'/accounts/login/?next={url}', status_code=302,
+                             target_status_code=200)
 
