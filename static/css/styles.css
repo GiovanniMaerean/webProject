@@ -1,74 +1,178 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+
 body {
-  background-color: #0d1b54; /* Dark blue background */
-  color: white; /* White text */
-  font-family: Arial, sans-serif; /* Adjust font family as needed */
+  background: linear-gradient(to bottom, #184657, #1b2838 35%);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: cover;
+  color: white;
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
 }
 
 .header-container {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 20px; /* Add horizontal padding */
+  padding: 20px;
+  background-color: #3b6591;
+  position: fixed;
+  width: 100%;
+  z-index: 99;
 }
 
 nav {
   display: flex;
   align-items: center;
-  background-color: #4a90e2; /* Blue navigation bar */
-  height: 60px; /* Aumenta la altura de la barra de navegación */
-  padding: 0 20px; /* Add horizontal padding */
-  width: calc(100% - 40px); /* Barra de navegación ocupa casi toda la anchura de la pantalla con un pequeño margen */
+  background-color: #3b6591;
+  height: 80px;
+  padding: 0 20px;
+  width: calc(100% - 40px);
+}
+
+nav .wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 1300px;
+  margin: auto;
+  width: 100%;
 }
 
 nav a {
   color: white;
   text-decoration: none;
-  padding: 10px 15px; /* Adjust padding for spacing */
-  font-weight: bold; /* Bold text for better readability */
+  padding: 15px 20px;
+  font-weight: 500;
+   font-size: 30px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
 }
 
 nav a:hover {
-  background-color: #103370; /* Subtle hover effect */
+  background-color: #1b2838;
 }
 
 .logo {
-  height: 60px; /* Ajusta la altura del logo */
-  margin-right: 10px; /* Espacio entre el logo y los elementos de la barra de navegación */
+  height: 100px;
+  margin-right: 10px;
 }
 
 h1 {
-  font-size: 36px; /* Aumenta el tamaño del título */
-  margin-right: auto; /* Mueve el título a la derecha */
-  margin-left: 20px; /* Añade un margen a la izquierda */
+  font-size: 40px;
+  margin-left: 20px;
+  font-weight: bold;
 }
 
-/* Ajustes para el texto "Hi user" y contenido inferior */
-.content {
-  /* Ajustes para el texto "Hi user" y contenido inferior */
-.content {
-  margin-left: 40px; /* Añade un margen más amplio a la izquierda */
-  font-size: 20px; /* Aumenta el tamaño del texto */
-}
+.marginForMainContent {
+  margin-top: 180px;
+  margin-left: 70px;
+  margin-right: auto;
+  padding: 20px 40px;
+  font-size: 20px;
+  flex: 1;
+  margin-bottom:100px;
+  line-height: 2;
 
 }
 
-/* Media queries for responsive navigation (optional) */
+.footer {
+  background: #00060e;
+  padding: 20px 50px;
+  text-align: center;
+  color: #fff;
+}
+
+.social-icon,
+.menu {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0;
+  flex-wrap: wrap;
+}
+
+.social-icon__link,
+.menu__link {
+  font-size: 2rem;
+  color: #fff;
+  margin: 0 10px;
+  display: inline-block;
+  transition: transform 0.5s;
+}
+
+.menu__link {
+  font-size: 1.2rem;
+  opacity: 0.75;
+  font-weight: 300;
+}
+
+.menu__link:hover,
+.social-icon__link:hover {
+  opacity: 1;
+  transform: translateY(-5px);
+}
+
 @media (max-width: 768px) {
   .header-container {
-    flex-direction: column; /* Stack items vertically on small screens */
+    flex-direction: column;
+    padding: 20px;
   }
 
   nav {
-    flex-direction: column; /* Stack items vertically on small screens */
-    height: auto; /* Auto height on small screens */
-    width: auto; /* Auto width on small screens */
+    flex-direction: column;
+    height: auto;
+    width: auto;
+    padding: 20px;
   }
 
   nav a {
-    padding: 10px 0; /* Adjust padding for spacing */
+    padding: 10px 20px;
   }
 
   .logo {
-    margin-bottom: 10px; /* Espacio entre el logo y los elementos de la barra de navegación */
+    margin-bottom: 10px;
   }
+
+  .content {
+    margin-top: 80px;
+  }
+}
+.button {
+  background-color: #4e677d;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.button:hover {
+  background-color: #3b506b;
+}
+
+.button:active {
+  transform: scale(0.95);
+}
+.buttonlogout{
+  background-color: #3a4b5b;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 30px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+}
+.buttonlogout:hover {
+  background-color: #2e3745;
+}
+
+.buttonlogout:active {
+  transform: scale(0.95);
 }

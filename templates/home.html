@@ -20,20 +20,12 @@
                     <input type="text" name="inputValue" id="inputValue">
                 </td>
                 <td>
-                    <button type="submit">Search</button>
+                    <button type="submit" class="button">Search</button>
                 </td>
             </tr>
         </table>
     </form>
-    <form action="{% url 'logout' %}" method="post">
-      {% csrf_token %}
-      <button type="submit">Log Out</button>
-    </form>
-    <a href="{% url 'createProducts' %}"><button type="submit">Add a Product</button></a>
-    <a href="{% url 'showProducts' %}"><button type="submit">Show Products</button></a>
-    <a href="{% url 'showDevelopers' %}"><button type="submit">Show Developers</button></a>
-    <a href="{% url 'showPublishers' %}"><button type="submit">Show Publishers</button></a>
-    <a href="{% url 'showSteamUsers' %}"><button type="submit">Show Steam Users</button></a>
+    
     
 {% else %}
     <p>You are not logged in</p>

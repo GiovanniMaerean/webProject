@@ -21,23 +21,26 @@
         <a href="{% url 'home' %}"><img src="{% static 'img/logo_steam2-ai-brush-removebg-g28ncgnt.png' %}" alt="Logo" class="logo"></a>
       <h1>Steam web</h1>
       <nav>
-          <a href="{% url 'createProducts' %}"><button type="submit">Add a Product</button></a>
-          <a href="{% url 'showProducts' %}"><button type="submit">Show Products</button></a>
-          <a href="{% url 'showDevelopers' %}"><button type="submit">Show Developers</button></a>
-          <a href="{% url 'showPublishers' %}"><button type="submit">Show Publishers</button></a>
-          <a href="{% url 'showSteamUsers' %}"><button type="submit">Show Steam Users</button></a>
+          <a href="{% url 'createProducts' %}">Add a Product</a>
+          <a href="{% url 'showProducts' %}">Show Products</a>
+          <a href="{% url 'showDevelopers' %}">Show Developers</a>
+          <a href="{% url 'showPublishers' %}">Show Publishers</a>
+          <a href="{% url 'showSteamUsers' %}">Show Steam Users</a>
           
           <form action="{% url 'logout' %}" method="post">
               {% csrf_token %}
-              <button type="submit">Log Out</button>
+              <button type="submit" class="buttonlogout">Log Out</button>
           </form>
       </nav>
     </div>
   </header>
 
   <main>
+    <div class = "marginForMainContent" >
     {% block content %}
+        
     {% endblock %}
+    </div>
   </main>
 </body>
 
