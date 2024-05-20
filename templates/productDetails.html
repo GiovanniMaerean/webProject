@@ -31,6 +31,6 @@
     <strong>Description:</strong> {{ product.description }}
     <br>
     <a href="{% url 'modifyProduct' product.id %}"><button type="submit" class="button">Modify</button></a>
-    <a href="{% url 'deleteProduct' product.id %}"><button type="submit" class="button">Delete</button></a>
+    <a href="{% url 'deleteProduct' product.id %}"><button type="submit" class="button" name="delete_button">Delete</button></a>
 
 {% endblock %}

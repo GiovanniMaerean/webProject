@@ -19,7 +19,7 @@ Feature: Edit Publisher
     And There are 1 publisher
 
 
-    Scenario: Try to edit steam user but not logged in
+    Scenario: Try to edit publisher but not logged in
     Given I'm not logged in
     When I edit Publisher test publisher
       | name  |
