@@ -5,7 +5,7 @@
 {% block content %}
 
     Modify your Steam products here
-    <form method="post">
+    <form name="product_form" method="post">
         {% csrf_token %}
         <table>
             <tr>

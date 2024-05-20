@@ -16,7 +16,6 @@ def step_impl(context):
                 form.find_by_name(column).first.fill(value)
 
             context.browser.find_by_css('.button[type="submit"]').first.click()
-            print(context.browser.url)
 
 
 @when('I select "{text}" from the autocomplete suggestions')

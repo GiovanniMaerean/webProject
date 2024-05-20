@@ -16,7 +16,6 @@ def step_impl(context):
             context.browser.find_by_css('.button[type="submit"]').first.click()
 
 
-
 @then('There are {count:n} steam user')
 def step_impl(context, count):
     from steamApp.models import SteamUser
