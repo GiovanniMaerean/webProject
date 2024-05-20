@@ -30,10 +30,10 @@ class Product(models.Model):
     age = models.IntegerField(null=True, blank=True)
     free = models.BooleanField(default=False)
     recommendations = models.IntegerField(null=True, blank=True)
-    releaseDate = models.CharField(max_length=20,blank=True, null=True)
+    releaseDate = models.CharField(max_length=20, blank=True, null=True)
     categories = models.CharField(max_length=500, blank=True, null=True)
     genres = models.CharField(max_length=500, blank=True, null=True)
-    #price = models.FloatField(null=True, blank=True)
+    # price = models.FloatField(null=True, blank=True)
     price = models.CharField(max_length=20, null=True, blank=True)
     discount = models.FloatField(null=True, blank=True)
     languages = models.CharField(max_length=500, blank=True)
@@ -41,9 +41,7 @@ class Product(models.Model):
     creatorUser = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.name +" "+ str(self.releaseDate)
-
-
+        return self.name + " " + str(self.releaseDate)
 
 
 class Developer(models.Model):
@@ -61,7 +59,7 @@ class Publisher(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4)
     name = models.CharField(max_length=200)
     publishedProducts = models.IntegerField(null=True)
-    #publishedProducts = models.CharField(max_length=20,null=True)
+    # publishedProducts = models.CharField(max_length=20,null=True)
     products = models.ManyToManyField('Product', blank=True)
     creatorUser = models.ForeignKey(User, on_delete=models.CASCADE)
 
