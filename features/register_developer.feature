@@ -29,4 +29,4 @@ Feature: Register developer
         | name  |
         | Developer test   |
     Then I'm redirected to the login form
-    And There are 0 products
+    And There are 0 developer
