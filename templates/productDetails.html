@@ -1,36 +1,76 @@
 {% extends "base.html" %}
 
-{% block title %}Product Details{% endblock %}
+{% block title %}Product Details- {{ product.name }}{% endblock %}
 
 {% block content %}
+    <span vocab="https://schema.org/" typeof="Product">
+        <h1>
+            <span property="name">{{ product.name }}</span>
+        </h1>
 
-    <strong>Name:</strong> {{ product.name }}
-    <br>
-    <strong>AppId:</strong> {{ product.appId }}
-    <br>
-    <strong>Type:</strong> {{ product.type }}
-    <br>
-    <strong>Age:</strong> {{ product.age }}
-    <br>
-    <strong>Free:</strong> {{ product.free }}
-    <br>
-    <strong>Recommendations:</strong> {{ product.recommendations }}
-    <br>
-    <strong>ReleaseDate:</strong> {{ product.releaseDate }}
-    <br>
-    <strong>Categories:</strong> {{ product.categories }}
-    <br>
-    <strong>Genres:</strong> {{ product.genres }}  
-    <br>
-    <strong>Price:</strong> {{ product.price }}
-    <br>
-    <strong>Discount:</strong> {{ product.discount }}
-    <br>
-    <strong>Languages:</strong> {{ product.languages }}
-    <br>
-    <strong>Description:</strong> {{ product.description }}
-    <br>
-    <a href="{% url 'modifyProduct' product.id %}"><button type="submit" class="button">Modify</button></a>
-    <a href="{% url 'deleteProduct' product.id %}"><button type="submit" class="button" name="delete_button">Delete</button></a>
+        <h2>
+            AppId:
+            <span property="identifier">{{ product.appId }}</span>
+        </h2>
+
+        <h2>Type:</h2>
+        <p>
+            {{ product.type }}
+        </p>
+        <h2>Age:</h2>
+
+        <p>
+            {{ product.age }}
+        </p>
+
+        <h2>Free:</h2>
+
+        <p>{{ product.free }}</p>
+
+        <h2>Recommendations:</h2>
+
+        <p>{{ product.recommendations }}</p>
+
+        <h2>ReleaseDate:</h2>
+        
+        <p><span property="releaseDate">{{ product.releaseDate }}</span></p>
+
+        <h2>Categories:</h2>
+
+        <p><span property="category">{{ product.categories }}</span></p>
+
+        <h2>Genres:</h2>
+
+        <p>{{ product.genres }}</p>
+
+        <h2>Price:</h2>
+
+         <p>
+            <span property="offers" typeof="Offer">
+                <span property="price">{{ product.price }}</span>
+            </span>
+        </p>
+
+        <h2>Discount:</h2>
+
+        <p>{{ product.discount }}</p>
+
+        <h2>Languages:</h2>
+
+        <p>{{ product.languages }}</p>
+
+        <h2>Description:</h2>
+
+        <p><span property="description">{{ product.description }}</span></p>
+
+    </span>
+
+
+    {% if user == product.creatorUser %}
+        <a href="{% url 'modifyProduct' product.id %}"><button type="submit" class="button">Modify</button></a>
+        <a href="{% url 'deleteProduct' product.id %}"><button type="submit" class="button" name="delete_button">Delete</button></a>
+    {% endif %}
+
+
 
 {% endblock %}

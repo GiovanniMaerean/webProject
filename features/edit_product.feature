@@ -21,7 +21,7 @@ Feature: Edit Product
 
     Scenario: Try to edit product but not logged in
     Given I'm not logged in
-    When I edit Hollow Knight current product
+    When I edit Hollow Knight product
       | price           |
       | $11.49           |
     Then I'm redirected to the login form
